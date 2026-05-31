@@ -1,0 +1,5 @@
+[
+  { "code": "gsuite-basic", "name": "Google Workspace Basic", "type": "gsuite", "meta": {"accounts":1}, "price": 6.99, "status": "active" },
+  { "code": "email-marketing-basic", "name": "Email Marketing Basic", "type": "email-marketing", "meta": {"monthly_sends":10000}, "price": 29.99, "status": "active" },
+  { "code": "website-migration", "name": "Website Migration", "type": "service", "meta": {"hours":2}, "price": 49.00, "status": "active" }
+]

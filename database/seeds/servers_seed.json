@@ -1,0 +1,4 @@
+[
+  {"hostname":"srv-web-1.siteworx.local","ip_address":"192.0.2.10","provider":"Local","region":"India","specs":{"cpu":"8 cores","ram":"32GB","disk":"1TB SSD"},"status":"active"},
+  {"hostname":"srv-cloud-1.siteworx.local","ip_address":"192.0.2.11","provider":"ProviderX","region":"USA","specs":{"cpu":"4 cores","ram":"16GB","disk":"500GB SSD"},"status":"active"}
+]

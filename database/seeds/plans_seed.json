@@ -1,0 +1,124 @@
+[
+  {
+    "name": "Shared Starter",
+    "slug": "shared-starter",
+    "category": "shared",
+    "description": "Affordable shared hosting for small websites.",
+    "specs": {"disk":"10GB SSD","bandwidth":"100GB","sites":1,"php":"8.0","ssl":"Free"},
+    "price_monthly": 1.99,
+    "price_yearly": 19.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Shared Business",
+    "slug": "shared-business",
+    "category": "shared",
+    "description": "Business oriented shared hosting with more resources.",
+    "specs": {"disk":"50GB SSD","bandwidth":"Unlimited","sites":5,"php":"8.0","ssl":"Free"},
+    "price_monthly": 4.99,
+    "price_yearly": 49.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Reseller Basic",
+    "slug": "reseller-basic",
+    "category": "reseller",
+    "description": "Starter reseller package with WHM/cPanel.",
+    "specs": {"disk":"60GB SSD","bandwidth":"1TB","accounts":30,"whm":true},
+    "price_monthly": 19.99,
+    "price_yearly": 199.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "VPS Small",
+    "slug": "vps-small",
+    "category": "vps",
+    "description": "Affordable VPS with guaranteed RAM and CPU.",
+    "specs": {"ram":"2GB","cpu":"1 vCPU","disk":"40GB SSD","bandwidth":"2TB"},
+    "price_monthly": 9.99,
+    "price_yearly": 99.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Cloud Basic",
+    "slug": "cloud-basic",
+    "category": "cloud",
+    "description": "Entry cloud server with scalable resources.",
+    "specs": {"ram":"4GB","cpu":"2 vCPU","disk":"80GB SSD","region":"India"},
+    "price_monthly": 24.99,
+    "price_yearly": 249.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Email Marketing Basic",
+    "slug": "email-marketing-basic",
+    "category": "email-marketing",
+    "description": "Starter package for bulk email marketing.",
+    "specs": {"send_per_month":"10000","smtp":"Included","support":"Email"},
+    "price_monthly": 29.99,
+    "price_yearly": 299.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Google Workspace Basic",
+    "slug": "gsuite-basic",
+    "category": "gsuite",
+    "description": "Google Workspace billing managed by SiteWorx.",
+    "specs": {"accounts":1,"storage":"30GB"},
+    "price_monthly": 6.99,
+    "price_yearly": 69.99,
+    "setup_fee": 0.00,
+    "status": "active"
+  }
+ ,
+  {
+    "name": "Beginner Plan",
+    "slug": "beginner-plan",
+    "category": "shared",
+    "description": "Beginner shared hosting plan.",
+    "specs": {"websites":1,"cpanel":1,"disk":"2GB","bandwidth":"5GB","emails":5,"subdomains":3,"databases":1},
+    "price_monthly": 161.00,
+    "price_yearly": 1610.00,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Business Plan",
+    "slug": "business-plan-1",
+    "category": "shared",
+    "description": "Business shared hosting plan.",
+    "specs": {"websites":5,"cpanel":5,"disk":"5GB","bandwidth":"unlimited","emails":"unlimited","subdomains":"unlimited","databases":"unlimited"},
+    "price_monthly": 221.00,
+    "price_yearly": 2210.00,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Traffic Plan",
+    "slug": "traffic-plan-1",
+    "category": "shared",
+    "description": "Higher-tier shared hosting for traffic.",
+    "specs": {"websites":10,"cpanel":10,"disk":"10GB","bandwidth":"unlimited","emails":"unlimited","subdomains":"unlimited","databases":"unlimited"},
+    "price_monthly": 311.00,
+    "price_yearly": 3110.00,
+    "setup_fee": 0.00,
+    "status": "active"
+  },
+  {
+    "name": "Standard Plan",
+    "slug": "standard-plan-1",
+    "category": "shared",
+    "description": "Standard shared hosting plan.",
+    "specs": {"websites":"unlimited","cpanel":"unlimited","disk":"20GB","bandwidth":"unlimited","emails":"unlimited","subdomains":"unlimited","databases":"unlimited"},
+    "price_monthly": 521.00,
+    "price_yearly": 5210.00,
+    "setup_fee": 0.00,
+    "status": "active"
+  }
+]

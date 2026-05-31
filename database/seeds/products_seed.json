@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Domain Registration",
+    "sku": "domain-1yr",
+    "category": "domains",
+    "description": "Register a .com domain for 1 year.",
+    "meta": {"tlds":["com","net","org"]},
+    "price": 9.99,
+    "status": "active"
+  },
+  {
+    "name": "SSL Certificate (Basic)",
+    "sku": "ssl-basic",
+    "category": "ssl",
+    "description": "Domain validated SSL certificate.",
+    "meta": {"type":"DV","period_months":12},
+    "price": 19.99,
+    "status": "active"
+  },
+  {
+    "name": "cPanel License (monthly)",
+    "sku": "cpanel-monthly",
+    "category": "licenses",
+    "description": "cPanel control panel license billed monthly.",
+    "meta": {"billing":"monthly"},
+    "price": 15.00,
+    "status": "active"
+  }
+]
