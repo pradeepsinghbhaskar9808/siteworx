@@ -15,8 +15,10 @@ $conn = mysql_connect("localhost","root","root")
 
 $databaseHost = 'localhost';
 $databaseName = 'siteworx_db';
-$databaseUsername = 'siteworx_db';
-$databasePassword = ';wzK6ox89F-U';
+$databaseUsername = 'root';
+$databasePassword = '';
+// $databaseUsername = 'siteworx_db';
+// $databasePassword = ';wzK6ox89F-U';
 
 try {
 	$dsn = "mysql:host={$databaseHost};dbname={$databaseName};charset=utf8mb4";

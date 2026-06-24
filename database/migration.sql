@@ -24,13 +24,18 @@ CREATE TABLE `login` (
   `email` VARCHAR(191) DEFAULT NULL,
   `password` VARCHAR(255) DEFAULT NULL,
   `role_id` INT UNSIGNED NOT NULL DEFAULT 3,
+  `manager_id` INT UNSIGNED DEFAULT NULL,
   `status` ENUM('active','suspended','deleted') NOT NULL DEFAULT 'active',
+  `reset_token` VARCHAR(128) DEFAULT NULL,
+  `reset_expiry` DATETIME DEFAULT NULL,
   `meta` JSON DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_login_username` (`username`),
-  UNIQUE KEY `uq_login_email` (`email`)
+  UNIQUE KEY `uq_login_email` (`email`),
+  KEY `idx_login_manager` (`manager_id`),
+  CONSTRAINT `fk_login_manager` FOREIGN KEY (`manager_id`) REFERENCES `login` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Hosting plans
@@ -45,6 +50,7 @@ CREATE TABLE `hosting_plans` (
   `price_monthly` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   `price_yearly` DECIMAL(10,2) DEFAULT NULL,
   `setup_fee` DECIMAL(10,2) DEFAULT 0.00,
+  `currency` VARCHAR(8) NOT NULL DEFAULT 'INR',
   `status` ENUM('active','draft','archived') NOT NULL DEFAULT 'active',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -121,7 +127,9 @@ DROP TABLE IF EXISTS `subscriptions`;
 CREATE TABLE `subscriptions` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
-  `plan_id` INT UNSIGNED NOT NULL,
+  `plan_id` INT UNSIGNED DEFAULT NULL,
+  `service_id` INT UNSIGNED DEFAULT NULL,
+  `server_id` INT UNSIGNED DEFAULT NULL,
   `order_item_id` BIGINT UNSIGNED DEFAULT NULL,
   `started_at` DATETIME NOT NULL,
   `expires_at` DATETIME DEFAULT NULL,
@@ -130,7 +138,8 @@ CREATE TABLE `subscriptions` (
   PRIMARY KEY (`id`),
   KEY `idx_subs_user` (`user_id`),
   CONSTRAINT `fk_subs_user` FOREIGN KEY (`user_id`) REFERENCES `login` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_subs_plan` FOREIGN KEY (`plan_id`) REFERENCES `hosting_plans` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_subs_plan` FOREIGN KEY (`plan_id`) REFERENCES `hosting_plans` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_subs_service` FOREIGN KEY (`service_id`) REFERENCES `service_catalog` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Invoices and payments
@@ -213,7 +222,7 @@ INSERT INTO `roles` (`id`,`name`,`description`) VALUES
 
 -- Example admin user (no password set) - set via register.php or run a secure password hash update
 INSERT INTO `login` (`username`,`name`,`email`,`password`,`role_id`,`status`,`created_at`) VALUES
-  ('admin','Administrator','admin@example.com','',1,'active',NOW());
+  ('admin','Administrator','admin@example.com','$2y$10$43jsz6la5sA8eBrwrslide/R5lK56Zub6ezTVZBzFTjLCkWr.yizW',1,'active',NOW());
 
 SET FOREIGN_KEY_CHECKS=1;
 
