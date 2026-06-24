@@ -1,0 +1,467 @@
+[
+  {
+    "name": "Linux Shared Beginner Plan",
+    "slug": "linux-shared-beginner",
+    "category": "shared-linux",
+    "description": "Foremost webhosting plan for any beginner developer.",
+    "specs": {"websites":1,"disk":"20GB","bandwidth":"5GB","emails":5,"subdomains":2,"databases":1,"source_page":"shared-hosting-linux.php"},
+    "price_monthly": 139,
+    "price_yearly": 1668,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Shared Traffic Plan",
+    "slug": "linux-shared-traffic",
+    "category": "shared-linux",
+    "description": "For growing businesses with high traffic and unlimited resources.",
+    "specs": {"websites":5,"disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 199,
+    "price_yearly": 2388,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Shared Professional Plan",
+    "slug": "linux-shared-professional",
+    "category": "shared-linux",
+    "description": "For multiple sites and unlimited resources.",
+    "specs": {"websites":10,"disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 299,
+    "price_yearly": 3588,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Shared Enterprise Plan",
+    "slug": "linux-shared-enterprise",
+    "category": "shared-linux",
+    "description": "Host unlimited websites.",
+    "specs": {"websites":"Unlimited","disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 439,
+    "price_yearly": 5268,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Shared Beginner Plan",
+    "slug": "windows-shared-beginner",
+    "category": "shared-windows",
+    "description": "Windows shared hosting for starter websites.",
+    "specs": {"websites":1,"disk":"20GB","bandwidth":"5GB","emails":5,"subdomains":2,"databases":1,"source_page":"shared-hosting-linux.php"},
+    "price_monthly": 139,
+    "price_yearly": 1668,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Shared Traffic Plan",
+    "slug": "windows-shared-traffic",
+    "category": "shared-windows",
+    "description": "Windows shared hosting for growing websites.",
+    "specs": {"websites":5,"disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 199,
+    "price_yearly": 2388,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Shared Professional Plan",
+    "slug": "windows-shared-professional",
+    "category": "shared-windows",
+    "description": "Windows shared hosting for multiple sites.",
+    "specs": {"websites":10,"disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 349,
+    "price_yearly": 4188,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Shared Enterprise Plan",
+    "slug": "windows-shared-enterprise",
+    "category": "shared-windows",
+    "description": "Windows shared hosting for unlimited websites.",
+    "specs": {"websites":"Unlimited","disk":"Unlimited","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited","source_page":"shared-hosting-linux.php"},
+    "price_monthly": 499,
+    "price_yearly": 5988,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Reseller Beginner Plan",
+    "slug": "linux-reseller-beginner",
+    "category": "reseller-linux",
+    "description": "Starter Linux reseller hosting plan.",
+    "specs": {"storage":"25 GB","websites":"Unlimited","accounts":"Unlimited WHM/cPanel","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MySQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 799,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Reseller Beginner Plan",
+    "slug": "windows-reseller-beginner",
+    "category": "reseller-windows",
+    "description": "Starter Windows reseller hosting plan.",
+    "specs": {"storage":"25 GB","websites":"Unlimited","accounts":"Unlimited Plesk","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MSSQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 799,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Reseller Business Plan",
+    "slug": "linux-reseller-business",
+    "category": "reseller-linux",
+    "description": "Business Linux reseller hosting plan.",
+    "specs": {"storage":"50 GB","websites":"Unlimited","accounts":"Unlimited WHM/cPanel","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MySQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 1299,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Reseller Business Plan",
+    "slug": "windows-reseller-business",
+    "category": "reseller-windows",
+    "description": "Business Windows reseller hosting plan.",
+    "specs": {"storage":"50 GB","websites":"Unlimited","accounts":"Unlimited Plesk","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MSSQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 1299,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Reseller Traffic Plan",
+    "slug": "linux-reseller-traffic",
+    "category": "reseller-linux",
+    "description": "High traffic Linux reseller hosting plan.",
+    "specs": {"storage":"100 GB","websites":"Unlimited","accounts":"Unlimited WHM/cPanel","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MySQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 1599,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Reseller Traffic Plan",
+    "slug": "windows-reseller-traffic",
+    "category": "reseller-windows",
+    "description": "High traffic Windows reseller hosting plan.",
+    "specs": {"storage":"100 GB","websites":"Unlimited","accounts":"Unlimited Plesk","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MSSQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 1599,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Linux Reseller Standard Plan",
+    "slug": "linux-reseller-standard",
+    "category": "reseller-linux",
+    "description": "Standard Linux reseller hosting plan.",
+    "specs": {"storage":"200 GB","websites":"Unlimited","accounts":"Unlimited WHM/cPanel","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MySQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 2199,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Windows Reseller Standard Plan",
+    "slug": "windows-reseller-standard",
+    "category": "reseller-windows",
+    "description": "Standard Windows reseller hosting plan.",
+    "specs": {"storage":"200 GB","websites":"Unlimited","accounts":"Unlimited Plesk","bandwidth":"Unlimited","emails":"Unlimited","subdomains":"Unlimited","databases":"Unlimited MSSQL","source_page":"hosting-reseller.php"},
+    "price_monthly": 2199,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "VPS Business Plan",
+    "slug": "vps-business",
+    "category": "vps",
+    "description": "Entry VPS hosting package.",
+    "specs": {"cpu":"2 CPU Cores","ram":"2 GB","disk":"30 GB SSD","bandwidth":"1TB","ips":"1","panel":"Free CentOS WP-Cpanel","source_page":"hosting-vps.php"},
+    "price_monthly": 849,
+    "price_yearly": 9588,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "VPS Traffic Plan",
+    "slug": "vps-traffic",
+    "category": "vps",
+    "description": "Traffic VPS hosting package.",
+    "specs": {"cpu":"2 CPU Cores","ram":"4 GB","disk":"80 GB SSD","bandwidth":"1TB","ips":"1","panel":"Free CentOS WP-Cpanel","source_page":"hosting-vps.php"},
+    "price_monthly": 1799,
+    "price_yearly": 19188,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "VPS Professional Plan",
+    "slug": "vps-professional",
+    "category": "vps",
+    "description": "Professional VPS hosting package.",
+    "specs": {"cpu":"4 CPU Cores","ram":"6 GB","disk":"100 GB SSD","bandwidth":"2TB","ips":"1","panel":"Free CentOS WP-Cpanel","source_page":"hosting-vps.php"},
+    "price_monthly": 2799,
+    "price_yearly": 31188,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "VPS Enterprise Plan",
+    "slug": "vps-enterprise",
+    "category": "vps",
+    "description": "Enterprise VPS hosting package.",
+    "specs": {"cpu":"4 CPU Cores","ram":"8 GB","disk":"100 GB SSD","bandwidth":"2TB","ips":"1","panel":"Free CentOS WP-Cpanel","source_page":"hosting-vps.php"},
+    "price_monthly": 3699,
+    "price_yearly": 39468,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "India Cloud Business Plan",
+    "slug": "india-cloud-business",
+    "category": "cloud-india",
+    "description": "India cloud server business plan.",
+    "specs": {"cpu":"2 CPU Cores","ram":"2 GB","disk":"50 GB SSD","bandwidth":"1TB","ips":"1 Dedicated IP","panel":"Free CentOS WP-Cpanel","source_page":"cloud-server-india.php"},
+    "price_monthly": 1799,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "India Cloud Traffic Plan",
+    "slug": "india-cloud-traffic",
+    "category": "cloud-india",
+    "description": "India cloud server traffic plan.",
+    "specs": {"cpu":"4 CPU Cores","ram":"4 GB","disk":"100 GB SSD","bandwidth":"1TB","ips":"1 Dedicated IP","panel":"Free CentOS WP-Cpanel","source_page":"cloud-server-india.php"},
+    "price_monthly": 2249,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "India Cloud Standard Plan",
+    "slug": "india-cloud-standard",
+    "category": "cloud-india",
+    "description": "India cloud server standard plan.",
+    "specs": {"cpu":"4 CPU Cores","ram":"6 GB","disk":"150 GB SSD","bandwidth":"2TB","ips":"1 Dedicated IP","panel":"Free CentOS WP-Cpanel","source_page":"cloud-server-india.php"},
+    "price_monthly": 2799,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "India Cloud Enterprise Plan",
+    "slug": "india-cloud-enterprise",
+    "category": "cloud-india",
+    "description": "India cloud server enterprise plan.",
+    "specs": {"cpu":"6 CPU Cores","ram":"8 GB","disk":"240 GB SSD","bandwidth":"2TB","ips":"1 Dedicated IP","panel":"Free CentOS WP-Cpanel","source_page":"cloud-server-india.php"},
+    "price_monthly": 4200,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Email Marketing Business Plan",
+    "slug": "email-marketing-business",
+    "category": "email-marketing",
+    "description": "Bulk email marketing server business plan.",
+    "specs": {"cpu":"4 CPU Core","ram":"8 GB","disk":"500 HDD","bandwidth":"5 TB","ips":"5 IP Addresses","source_page":"email-marketing.php"},
+    "price_monthly": 6999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Email Marketing Traffic Plan",
+    "slug": "email-marketing-traffic",
+    "category": "email-marketing",
+    "description": "Bulk email marketing traffic plan.",
+    "specs": {"cpu":"8 Cores / 8 Threads","ram":"16 GB","disk":"2TB SATA","bandwidth":"5 TB","ips":"5 IP Addresses","source_page":"email-marketing.php"},
+    "price_monthly": 7999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Email Marketing Professional Plan",
+    "slug": "email-marketing-professional",
+    "category": "email-marketing",
+    "description": "Bulk email marketing professional plan.",
+    "specs": {"cpu":"8 Cores / 8 Threads","ram":"16 GB","disk":"120GB NVMe + 2TB","bandwidth":"5 TB","ips":"5 IP Addresses","source_page":"email-marketing.php"},
+    "price_monthly": 8499,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Email Marketing Enterprise Plan",
+    "slug": "email-marketing-enterprise",
+    "category": "email-marketing",
+    "description": "Bulk email marketing enterprise plan.",
+    "specs": {"cpu":"8 Cores / 8 Threads","ram":"16 GB","disk":"500GB HDD","bandwidth":"5 TB","ips":"/24 (256) IP Addresses","source_page":"email-marketing.php"},
+    "price_monthly": 110000,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Google Workspace Business Starter",
+    "slug": "google-workspace-business-starter",
+    "category": "gsuite",
+    "description": "Google Workspace Business Starter.",
+    "specs": {"email":"Custom and secure business email","meetings":"100 participant video meetings","storage":"30 GB pooled storage per user","support":"Standard support","source_page":"gsuite.php"},
+    "price_monthly": 163,
+    "price_yearly": 1950,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Google Workspace Business Standard",
+    "slug": "google-workspace-business-standard",
+    "category": "gsuite",
+    "description": "Google Workspace Business Standard.",
+    "specs": {"email":"Custom and secure business email","meetings":"150 participant video meetings + recording","storage":"2 TB pooled storage per user","support":"Standard support","source_page":"gsuite.php"},
+    "price_monthly": 580,
+    "price_yearly": 6960,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Google Workspace Business Plus",
+    "slug": "google-workspace-business-plus",
+    "category": "gsuite",
+    "description": "Google Workspace Business Plus.",
+    "specs": {"email":"Custom and secure business email + eDiscovery, retention","meetings":"500 participant video meetings + recording","storage":"5 TB pooled storage per user","security":"Vault and advanced endpoint management","source_page":"gsuite.php"},
+    "price_monthly": 999,
+    "price_yearly": 11988,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Google Workspace Enterprise",
+    "slug": "google-workspace-enterprise",
+    "category": "gsuite",
+    "description": "Google Workspace Enterprise, contact sales.",
+    "specs": {"email":"Custom and secure business email + eDiscovery, retention, S/MIME encryption","meetings":"1000 participant video meetings + advanced features","storage":"5 TB pooled storage per user, expandable","security":"Advanced security, management and compliance controls","source_page":"gsuite.php"},
+    "price_monthly": 0,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Core i5-3470",
+    "slug": "dedicated-intel-core-i5-3470",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Core i5-3470 4 Cores","clock":"3.20Ghz","ram":"8 GB DDR3","storage":"240 GB SSD","bandwidth":"2000 GB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 2999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Core i7-3770",
+    "slug": "dedicated-intel-core-i7-3770",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Core i7-3770 4 Cores","clock":"3.40Ghz","ram":"8 GB DDR3","storage":"480 GB SSD","bandwidth":"2000 GB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 3599,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon 3430",
+    "slug": "dedicated-intel-xeon-3430",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon 3430 4 Cores","clock":"2.40Ghz","ram":"8 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 3999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon 1231 v3",
+    "slug": "dedicated-intel-xeon-1231-v3",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon 1231_v3 4 Cores","clock":"3.40Ghz","ram":"16 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 4999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon E5-2620 32GB",
+    "slug": "dedicated-intel-xeon-e5-2620-32gb",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon E5-2620 6 Cores","clock":"2.5Ghz","ram":"32 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 5999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon E5-2620 64GB",
+    "slug": "dedicated-intel-xeon-e5-2620-64gb",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon E5-2620 6 Cores","clock":"2.5Ghz","ram":"64 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 6999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon E5-2650",
+    "slug": "dedicated-intel-xeon-e5-2650",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon E5-2650 8 Cores","clock":"2.60Ghz","ram":"64 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 7999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon E5-2620 12 Core",
+    "slug": "dedicated-intel-xeon-e5-2620-12-core",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon E5-2620 12 Cores","clock":"2.60Ghz","ram":"64 GB DDR3","storage":"480 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 8999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Intel Xeon E5-2670",
+    "slug": "dedicated-intel-xeon-e5-2670",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Intel Xeon E5-2670 16 Cores","clock":"2.60Ghz","ram":"128 GB DDR3","storage":"960 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 13999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Dual Xeon E5-2670",
+    "slug": "dedicated-dual-xeon-e5-2670",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Dual Xeon E5-2670 16 Cores","clock":"2.60Ghz","ram":"256 GB DDR3","storage":"960 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 17999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Dual E5-2683v4 128GB",
+    "slug": "dedicated-dual-e5-2683v4-128gb",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Dual E5-2683v4 24 Cores","clock":"3.0GHz Turbo","ram":"128 GB DDR3","storage":"960 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 17999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Dual E5-2683v4 256GB",
+    "slug": "dedicated-dual-e5-2683v4-256gb",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Dual E5-2683v4 24 Cores","clock":"3.0GHz Turbo","ram":"256 GB DDR3","storage":"960 GB SSD","bandwidth":"200 TB","ips":"1 IP","source_page":"dedicated-server-india.php"},
+    "price_monthly": 21999,
+    "currency": "INR",
+    "status": "active"
+  },
+  {
+    "name": "Dedicated Xeon E7-4860",
+    "slug": "dedicated-xeon-e7-4860",
+    "category": "dedicated-india",
+    "description": "India dedicated server.",
+    "specs": {"processor":"Xeon E7-4860 40 Cores","clock":"2.67GHz Turbo","ram":"256GB DDR3","storage":"960 GB SSD","bandwidth":"200TB","ips":"5 IPs","source_page":"dedicated-server-india.php"},
+    "price_monthly": 29999,
+    "currency": "INR",
+    "status": "active"
+  }
+]

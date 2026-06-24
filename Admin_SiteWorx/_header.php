@@ -1,5 +1,36 @@
 <?php
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+$base_url = $base_url ?? '';
+
+// If role not in session, try to get it from database (fallback for existing pages)
+if (empty($_SESSION['role']) && !empty($_SESSION['id'])) {
+    require_once __DIR__ . '/connection.php';
+    require_once __DIR__ . '/lib_auth.php';
+    try {
+        $user = current_user($pdo);
+        if ($user) {
+            $role = get_user_role($pdo, $user);
+            $_SESSION['role'] = $role ?? 'client';
+        }
+    } catch (Exception $e) {
+        $_SESSION['role'] = 'client';
+    }
+}
+
+// Get current user role for menu filtering
+$current_role = $_SESSION['role'] ?? 'client';
+
+// Define menu items with role restrictions
+// Format: 'label' => ['url' => 'path', 'roles' => ['admin', 'manager', 'client']]
+$menu_items = [
+    'Dashboard' => ['url' => 'index.php', 'roles' => ['admin', 'manager']],
+    'Plans' => ['url' => 'manage_plans.php', 'roles' => ['admin', 'manager']],
+    'Services' => ['url' => 'services.php', 'roles' => ['admin', 'manager']],
+    'Servers' => ['url' => 'servers.php', 'roles' => ['admin']],
+    'Users' => ['url' => 'users.php', 'roles' => ['admin', 'manager']],
+    'My Services' => ['url' => 'my_services.php', 'roles' => ['admin', 'manager', 'client']],
+    'Orders' => ['url' => 'orders.php', 'roles' => ['admin', 'manager', 'client']],
+];
 ?>
 <!doctype html>
 <html>
@@ -16,16 +47,22 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
     <div class="d-flex align-items-center">
       <a class="navbar-brand text-white me-3" href="index.php">SiteWorx</a>
       <nav class="nav d-none d-md-flex">
-        <a class="nav-link text-white" href="index.php">Dashboard</a>
-        <a class="nav-link text-white" href="manage_plans.php">Plans</a>
-        <a class="nav-link text-white" href="view.php">Products</a>
-        <a class="nav-link text-white" href="create_user.php">Users</a>
-        <a class="nav-link text-white" href="orders.php">Orders</a>
+        <?php foreach ($menu_items as $label => $item): ?>
+            <?php if (in_array($current_role, $item['roles'])): ?>
+                <a class="nav-link text-white" href="<?php echo htmlspecialchars($item['url']); ?>">
+                    <?php echo htmlspecialchars($label); ?>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
       </nav>
     </div>
     <div>
       <?php if (!empty($_SESSION['name'])): ?>
-        <span class="me-3">Signed in as <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+        <span class="me-3">
+          <?php echo htmlspecialchars($_SESSION['name']); ?> 
+          <small class="text-muted">(<?php echo htmlspecialchars($current_role); ?>)</small>
+        </span>
+        <a class="btn btn-sm btn-outline-light me-2" href="change_password.php">Password</a>
         <a class="btn btn-sm btn-light" href="logout.php">Logout</a>
       <?php else: ?>
         <a class="btn btn-sm btn-light" href="login.php">Login</a>

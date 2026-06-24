@@ -6,6 +6,28 @@
    $Metadescription="Find the perfect plan to fit your website's needs. High-performance servers, automatic backups, and a user-friendly control panel. Web Hosting,Hosting Services,Domain Hosting,Website Hosting,Shared Hosting,VPS Hosting ,Dedicated Server Hosting,Cloud Hosting,Managed Hosting,Reseller Hosting. Buy Now!";
   $metakeywords="Web hosting in India, Best web hosting in India, cheapest web hosting in india, web hosting company in india, best web hosting company in india, web hosting india, web hosting services in india, domain name in india, domain name, web hosting companies India, email hosting, best web hosting, cheap web hosting, Bulk Email Marketing Server, Best web development in india, web development in india, web design in india, Best SEO Service in India, Best ADS Service In india, Best Facebook ADS in india, Best web Development In Jaipur, Best Instagram ADS In India";
    include('header.php');
+   
+   // Load plans for Linux and Windows
+   $linuxPlans = [];
+   $windowsPlans = [];
+   
+   if (isset($pdo)) {
+       try {
+           $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE category = :cat AND status='active' ORDER BY price_monthly ASC");
+           
+           // Get Linux plans
+           $stmt->execute([':cat' => 'reseller-linux']);
+           $linuxPlans = $stmt->fetchAll();
+           
+           // Get Windows plans
+           $stmt->execute([':cat' => 'reseller-windows']);
+           $windowsPlans = $stmt->fetchAll();
+       } catch (Exception $e) {
+           // fallback empty
+           $linuxPlans = [];
+           $windowsPlans = [];
+       }
+   }
    ?>  
         <!-- content begin -->
         <div class="no-bottom no-top" id="content">
@@ -52,179 +74,92 @@
                             </div>
                          </div>
                         </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-                                                <div class="top">
-                                                    <h2>Beginner Plan</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m ">799</span>
-														<span class="month">p/mo</span>
-													</p>               
-                                                </div>
-												
-                                                <div class="bottom">
-
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>25 GB Storage</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Websites </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">WHM cPanel</span>
-														<span class=" opt-2">Plesk</span>
-                                                        Accounts </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Bandwidth </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Email Accounts</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Sub Domains
-</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">Mysql</span>
-														<span class=" opt-2">Mssql</span>
-                                                        Database</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!
-</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-												<div class="action">
-                                                 <span class=" opt-1">
-                                                    <a href="http://siteworx.in/manage/index.php?rp=/store/linux-reseller-hosting/linux-reseller-beginner-plan"  class="btn-custom" >Order Now</a>
-                                                 </span>
-                                                 <span class=" opt-2">
-                                                     <a href="http://siteworx.in/manage/index.php?rp=/store/window-reseller-hosting/windows-reseller-beginner-plan" class="btn-custom">Order Now</a>
-                                                 </span>
-                                                 </div>
-											
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-												<div class="ribbon" >HOT</div>
-                                                <div class="top">
-                                                    <h2>Business Plan</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m ">1299</span>
-													
-														<span class="month">p/mo</span>
-													</p>     
-                                                </div>
-                                                <div class="bottom">
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>50 GB Storage</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Websites</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">WHM cPanel</span>
-														<span class=" opt-2">Plesk</span>
-                                                        Accounts </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Bandwidth  </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Email Accounts</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Sub Domains</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">Mysql</span>
-														<span class=" opt-2">Mssql</span>
-                                                        Database</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="action">
-                                                 <span class=" opt-1">
-                                                    <a href="http://siteworx.in/manage/index.php?rp=/store/linux-reseller-hosting/linux-reseller-business-plan"  class="btn-custom" >Order Now</a>
-                                                 </span>
-                                                 <span class=" opt-2">
-                                                     <a href="http://siteworx.in/manage/index.php?rp=/store/window-reseller-hosting/window-reseller-business-plan" class="btn-custom">Order Now</a>
-                                                 </span>
-                                                 </div>
-											
-                                            </div>
-                                        </div>
-										<div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-                                                <div class="top">
-                                                    <h2> Traffic Plan</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m ">1599</span>
-													
-														<span class="month">p/mo</span>
-													</p>     
-                                                </div>
-                                                <div class="bottom">
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>100 GB Storage</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Websites</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1"> WHM cPanel</span>
-														<span class=" opt-2">Plesk</span>
-                                                        Accounts </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Bandwidth</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Email Accounts</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Sub Domains</li>
-                                                       <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">Mysql</span>
-														<span class=" opt-2">Mssql</span>
-                                                        Database</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="action">
-                                                 <span class=" opt-1">
-                                                    <a href="http://siteworx.in/manage/index.php?rp=/store/linux-reseller-hosting/linux-reseller-traffic-plan"  class="btn-custom" >Order Now</a>
-                                                 </span>
-                                                 <span class=" opt-2">
-                                                     <a href="http://siteworx.in/manage/index.php?rp=/store/window-reseller-hosting/windows-reseller-traffic-plan" class="btn-custom">Order Now</a>
-                                                 </span>
-                                                 </div>
-												
-											
-                                            </div>
-                                        </div>
-										<div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-                                                <div class="top">
-                                                    <h2>Standard Plan</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m">2199</span>
-													
-														<span class="month">p/mo</span>
-													</p>     
-                                                </div>
-                                                <div class="bottom">
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>200 GB Storage</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Websites</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited  
-                                                        <span class=" opt-1">WHM cPanel</span>
-														<span class=" opt-2">Plesk</span>
-                                                        Accounts </li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Bandwidth</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Email Accounts</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited Sub Domains</li>
-                                                        <li><i class="fa fa-check-square"></i>Unlimited 
-                                                        <span class=" opt-1">Mysql</span>
-														<span class=" opt-2">Mssql</span>
-                                                        Database</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="action">
-                                                 <span class=" opt-1">
-                                                    <a href="http://siteworx.in/manage/index.php?rp=/store/linux-reseller-hosting/linux-reseller-standard-plan"  class="btn-custom" >Order Now</a>
-                                                 </span>
-                                                 <span class=" opt-2">
-                                                     <a href="http://siteworx.in/manage/index.php?rp=/store/window-reseller-hosting/windows-reseller-standard-plan" class="btn-custom">Order Now</a>
-                                                 </span>
-                                                 </div>
-												
-                                            </div>
-                                        </div>
+                        <div class="row" id="plans-container">
+                                            <?php
+                                            // Combine plans with platform indicator
+                                            $allPlans = [];
+                                            foreach ($linuxPlans as $plan) {
+                                                $plan['platform'] = 'linux';
+                                                $allPlans[] = $plan;
+                                            }
+                                            foreach ($windowsPlans as $plan) {
+                                                $plan['platform'] = 'windows';
+                                                $allPlans[] = $plan;
+                                            }
+                                            
+                                            if (!empty($allPlans)) {
+                                                $counter = 0;
+                                                foreach ($allPlans as $plan) {
+                                                    $counter++;
+                                                    $specs = json_decode($plan['specs'], true);
+                                                    $platformClass = ($plan['platform'] === 'linux') ? 'opt-1' : 'opt-2';
+                                                    $displayStyle = ($plan['platform'] === 'linux') ? 'display: block;' : 'display: none;';
+                                                    $isHOT = ($counter === 2) ? true : false;
+                                                    
+                                                    // Build order URL based on platform
+                                                    $orderUrl = ($plan['platform'] === 'linux') 
+                                                        ? "http://siteworx.in/manage/index.php?rp=/store/linux-reseller-hosting/" . urlencode($plan['slug'])
+                                                        : "http://siteworx.in/manage/index.php?rp=/store/window-reseller-hosting/" . urlencode($plan['slug']);
+                                                    ?>
+                                                    <div class="col-lg-3 col-md-6 col-sm-12" data-platform="<?php echo htmlspecialchars($plan['platform']); ?>" style="<?php echo $displayStyle; ?>">
+                                                        <div class="pricing-s1 mb30">
+                                                            <?php if ($isHOT): ?>
+                                                                <div class="ribbon">HOT</div>
+                                                            <?php endif; ?>
+                                                            <div class="top">
+                                                                <h2><?php echo htmlspecialchars($plan['name']); ?></h2>
+                                                                <p class="price">
+                                                                    <span class="txt">Start from</span>
+                                                                    <span class="currency"><?php echo htmlspecialchars($plan['currency']); ?></span>
+                                                                    <span class="m"><?php echo number_format($plan['price_monthly'], 0); ?></span>
+                                                                    <span class="month">p/mo</span>
+                                                                </p>               
+                                                            </div>
+                                                            
+                                                            <div class="bottom">
+                                                                <ul>
+                                                                    <?php if (isset($specs['storage'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['storage']); ?> Storage</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['websites'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['websites']); ?> Websites</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['accounts'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['accounts']); ?> Accounts</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['bandwidth'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['bandwidth']); ?> Bandwidth</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['emails'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['emails']); ?> Email Accounts</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['subdomains'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['subdomains']); ?> Sub Domains</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['databases'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['databases']); ?> Database</li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['free_setup'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['free_setup']); ?></li>
+                                                                    <?php endif; ?>
+                                                                    <?php if (isset($specs['uptime'])): ?>
+                                                                        <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['uptime']); ?></li>
+                                                                    <?php endif; ?>
+                                                                </ul>
+                                                            </div>
+                                                            
+                                                            <div class="action">
+                                                                <a href="<?php echo htmlspecialchars($orderUrl); ?>" class="btn-custom">Order Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            } else {
+                                                echo '<div class="col-lg-12 text-center"><p>No plans available at the moment.</p></div>';
+                                            }
+                                            ?>
+                        </div>
 <!--                                        <div class="col-md-12 wow fadeInUp">-->
 <!--                            <div class="text-center">-->
 <!--                                <h2><span class="uptitle id-color">Select Your</span>Windows Reseller Hosting Plan</h2>-->
@@ -363,7 +298,36 @@
                                         </div>
             </section>
  
-<hr>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleSwitch = document.getElementById('sw-1');
+    const plansContainer = document.getElementById('plans-container');
+    
+    if (!toggleSwitch || !plansContainer) return;
+    
+    // Initialize - show Linux plans by default (unchecked)
+    updatePlansDisplay(false);
+    
+    // Listen for toggle change
+    toggleSwitch.addEventListener('change', function() {
+        updatePlansDisplay(this.checked);
+    });
+    
+    function updatePlansDisplay(isWindows) {
+        const planCards = plansContainer.querySelectorAll('[data-platform]');
+        
+        planCards.forEach(card => {
+            const platform = card.getAttribute('data-platform');
+            
+            if ((isWindows && platform === 'windows') || (!isWindows && platform === 'linux')) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
 			  <section id="section-features">
                 <div class="container">
                     <div class="row">

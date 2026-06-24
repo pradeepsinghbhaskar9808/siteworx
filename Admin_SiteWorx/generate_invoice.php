@@ -21,7 +21,7 @@ if ($current['id'] !== (int)$inv['user_id']) {
     }
 }
 
-$items = $pdo->prepare('SELECT oi.*, hp.name AS plan_name FROM order_items oi LEFT JOIN hosting_plans hp ON hp.id = oi.plan_id WHERE oi.order_id = :o');
+$items = $pdo->prepare('SELECT oi.*, hp.name AS plan_name, sc.name AS service_name FROM order_items oi LEFT JOIN hosting_plans hp ON hp.id = oi.plan_id LEFT JOIN service_catalog sc ON sc.id = oi.service_id WHERE oi.order_id = :o');
 $items->execute([':o'=>$inv['order_id']]);
 $items = $items->fetchAll();
 
@@ -44,8 +44,12 @@ $items = $items->fetchAll();
       <thead><tr><th>Item</th><th>Period</th><th>Qty</th><th>Unit</th><th>Total</th></tr></thead>
       <tbody>
         <?php foreach($items as $it): ?>
+          <?php
+            $meta = !empty($it['meta']) ? json_decode($it['meta'], true) : [];
+            $itemName = $it['plan_name'] ?: ($it['service_name'] ?: ($meta['hostname'] ?? 'Service'));
+          ?>
           <tr>
-            <td><?php echo htmlspecialchars($it['plan_name'] ?? 'Service'); ?></td>
+            <td><?php echo htmlspecialchars($itemName); ?></td>
             <td><?php echo intval($it['period_months']); ?> months</td>
             <td><?php echo intval($it['quantity']); ?></td>
             <td><?php echo number_format($it['unit_price'],2); ?></td>

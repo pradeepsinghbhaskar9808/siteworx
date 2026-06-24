@@ -3,8 +3,18 @@
 
    $Metadescription="Find the perfect plan to fit your website's needs. High-performance servers, automatic backups, and a user-friendly control panel. Web Hosting,Hosting Services,Domain Hosting,Website Hosting,Shared Hosting,VPS Hosting ,Dedicated Server Hosting,Cloud Hosting,Managed Hosting,Reseller Hosting. Buy Now!";
   $metakeywords="Web hosting in India, Best web hosting in India, cheapest web hosting in india, web hosting company in india, best web hosting company in india, web hosting india, web hosting services in india, domain name in india, domain name, web hosting companies India, email hosting, best web hosting, cheap web hosting, Bulk Email Marketing Server, Best web development in india, web development in india, web design in india, Best SEO Service in India, Best ADS Service In india, Best Facebook ADS in india, Best web Development In Jaipur, Best Instagram ADS In India";
-   include('header.php');
-   ?>
+   include('header.php');   
+   // Load cloud hosting plans
+   $cloudPlans = [];
+   if (isset($pdo)) {
+       try {
+           $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE category = :cat AND status='active' ORDER BY price_monthly ASC");
+           $stmt->execute([':cat' => 'cloud-hosting']);
+           $cloudPlans = $stmt->fetchAll();
+       } catch (Exception $e) {
+           $cloudPlans = [];
+       }
+   }   ?>
         <!-- content begin -->
         <div class="no-bottom no-top" id="content">
             <div id="top"></div>
@@ -27,103 +37,71 @@
           
 			<section id="plans" class="relative pos-top no-top mt-60 no-bg">
                 <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-                                                <div class="top">
-                                                    <h2>Cloud Business</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m opt-1">999</span>
-														<span class="y opt-2">899</span>
-														<span class="month">p/mo</span>
-													</p>               
-                                                </div>
-												
-                                                <div class="bottom">
-
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>2 CPU Cores</li>
-                                                        <li><i class="fa fa-check-square"></i>2 GB RAM</li>
-                                                        <li><i class="fa fa-check-square"></i>30 GB Hard Disk - SSD</li>
-                                                        <li><i class="fa fa-check-square"></i>1TB Bandwidth</li>
-                                                        <li><i class="fa fa-check-square"></i>1 IP Addresses</li>
-                                                        <li><i class="fa fa-check-square"></i>Free CentOS WP-Cpanel</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!
-</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-												
-												<div class="action">
-													<a href="#" class="btn-custom">Order Now</a>
-												</div>
-                                            </div>
+                    <div class="row">
+                        <?php
+                        if (empty($cloudPlans)) {
+                            echo '<div class="col-12 text-center"><p>No plans available at the moment.</p></div>';
+                        } else {
+                            $counter = 0;
+                            foreach ($cloudPlans as $plan) {
+                                $counter++;
+                                $specs = json_decode($plan['specs'], true);
+                                $isHOT = ($counter === 2) ? true : false;
+                                ?>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="pricing-s1 mb30">
+                                        <?php if ($isHOT): ?>
+                                            <div class="ribbon">HOT</div>
+                                        <?php endif; ?>
+                                        <div class="top">
+                                            <h2><?php echo htmlspecialchars($plan['name']); ?></h2>
+                                            <p class="price">
+                                                <span class="txt">Start from</span>
+                                                <span class="currency"><?php echo htmlspecialchars($plan['currency']); ?></span>
+                                                <span class="m opt-1"><?php echo number_format($plan['price_monthly'], 0); ?></span>
+                                                <span class="y opt-2"><?php echo number_format($plan['price_yearly'] / 12, 0); ?></span>
+                                                <span class="month">p/mo</span>
+                                            </p>
                                         </div>
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-												<div class="ribbon">HOT</div>
-                                                <div class="top">
-                                                    <h2>Cloud Professional</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m opt-1">2999</span>
-														<span class="y opt-2">2799</span>
-														<span class="month">p/mo</span>
-													</p>     
-                                                </div>
-                                                <div class="bottom">
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>4 CPU Cores</li>
-                                                        <li><i class="fa fa-check-square"></i>4 GB RAM</li>
-                                                        <li><i class="fa fa-check-square"></i>60 GB Hard Disk - SSD</li>
-                                                        <li><i class="fa fa-check-square"></i>1TB Bandwidth</li>
-                                                        <li><i class="fa fa-check-square"></i>1 IP Addresses</li>
-                                                        <li><i class="fa fa-check-square"></i>Free CentOS WP-Cpanel</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-												
-												<div class="action">
-													<a href="#" class="btn-custom">Order Now</a>
-												</div>
-                                            </div>
+                                        <div class="bottom">
+                                            <ul>
+                                                <?php if (isset($specs['cpu_cores'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['cpu_cores']); ?> CPU Cores</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['ram'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['ram']); ?> RAM</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['storage'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['storage']); ?> Hard Disk - SSD</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['bandwidth'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['bandwidth']); ?> Bandwidth</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['ip_addresses'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['ip_addresses']); ?> IP Addresses</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['control_panel'])): ?>
+                                                    <li><i class="fa fa-check-square"></i>Free <?php echo htmlspecialchars($specs['control_panel']); ?> CPanel</li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['free_setup'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['free_setup']); ?></li>
+                                                <?php endif; ?>
+                                                <?php if (isset($specs['uptime'])): ?>
+                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['uptime']); ?></li>
+                                                <?php endif; ?>
+                                            </ul>
                                         </div>
-										<div class="col-lg-4 col-md-6 col-sm-12">
-                                            <div class="pricing-s1 mb30">
-                                                <div class="top">
-                                                    <h2>Cloud Enterprise</h2>
-                                                    <p class="price">
-														<span class="txt">Start from</span>
-														<span class="currency">INR</span>
-														<span class="m opt-1">4999</span>
-														<span class="y opt-2">4799</span>
-														<span class="month">p/mo</span>
-													</p>     
-                                                </div>
-                                                <div class="bottom">
-                                                    <ul>
-                                                        <li><i class="fa fa-check-square"></i>8 CPU Cores</li>
-                                                        <li><i class="fa fa-check-square"></i>8 GB RAM</li>
-                                                        <li><i class="fa fa-check-square"></i>120 GB Hard Disk - SSD</li>
-                                                        <li><i class="fa fa-check-square"></i>1TB Bandwidth</li>
-                                                        <li><i class="fa fa-check-square"></i>1 IP Addresses</li>
-                                                        <li><i class="fa fa-check-square"></i>Free CentOS WP-Cpanel</li>
-                                                        <li><i class="fa fa-check-square"></i>FREE Set Up!!</li>
-                                                        <li><i class="fa fa-check-square"></i>99.9% Uptime Guarantee</li>
-                                                    </ul>
-                                                </div>
-												
-												<div class="action">
-													<a href="#" class="btn-custom">Order Now</a>
-												</div>
-                                            </div>
+                                        <div class="action">
+                                            <a href="#" class="btn-custom">Order Now</a>
                                         </div>
                                     </div>
                                 </div>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
             </section>
  
 <hr>

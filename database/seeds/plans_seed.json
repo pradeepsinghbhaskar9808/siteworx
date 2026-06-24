@@ -22,11 +22,11 @@
     "status": "active"
   },
   {
-    "name": "Reseller Basic",
-    "slug": "reseller-basic",
-    "category": "reseller",
-    "description": "Starter reseller package with WHM/cPanel.",
-    "specs": {"disk":"60GB SSD","bandwidth":"1TB","accounts":30,"whm":true},
+    "name": "Linux Reseller Basic",
+    "slug": "linux-reseller-basic",
+    "category": "reseller-linux",
+    "description": "Starter Linux reseller package with WHM/cPanel.",
+    "specs": {"disk":"60GB SSD","bandwidth":"1TB","accounts":30,"control_panel":"WHM/cPanel","databases":"MySQL"},
     "price_monthly": 19.99,
     "price_yearly": 199.99,
     "setup_fee": 0.00,

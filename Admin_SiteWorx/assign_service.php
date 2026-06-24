@@ -1,6 +1,7 @@
 <?php
 require_once 'connection.php';
 require_once 'lib_auth.php';
+require_once 'lib_admin.php';
 require_role($pdo, ['admin','manager']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -8,20 +9,42 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $user_id = (int)($_POST['user_id'] ?? 0);
-$plan_id = (int)($_POST['plan_id'] ?? 0);
+$item = (string)($_POST['item_id'] ?? '');
 $months = max(1, (int)($_POST['period_months'] ?? 1));
 
-if (!$user_id || !$plan_id) {
+if (!$user_id || !$item || !sw_can_manage_user($pdo, $user_id)) {
     die('Missing params');
 }
 
-// fetch plan
-$stmt = $pdo->prepare('SELECT * FROM hosting_plans WHERE id = :id LIMIT 1');
-$stmt->execute([':id' => $plan_id]);
-$plan = $stmt->fetch();
-if (!$plan) die('Plan not found');
+$type = 'plan';
+$itemId = 0;
+if (strpos($item, ':') !== false) {
+    [$type, $rawId] = explode(':', $item, 2);
+    $itemId = (int)$rawId;
+} else {
+    $itemId = (int)$item;
+}
 
-$unit = (float)($plan['price_monthly'] ?? 0.00);
+$plan = $service = $server = null;
+if ($type === 'service') {
+    $stmt = $pdo->prepare('SELECT * FROM service_catalog WHERE id = :id LIMIT 1');
+    $stmt->execute([':id' => $itemId]);
+    $service = $stmt->fetch();
+    if (!$service) die('Service not found');
+    $unit = (float)($service['price'] ?? 0.00);
+} elseif ($type === 'server') {
+    $stmt = $pdo->prepare('SELECT * FROM servers WHERE id = :id LIMIT 1');
+    $stmt->execute([':id' => $itemId]);
+    $server = $stmt->fetch();
+    if (!$server) die('Server not found');
+    $unit = 0.00;
+} else {
+    $stmt = $pdo->prepare('SELECT * FROM hosting_plans WHERE id = :id LIMIT 1');
+    $stmt->execute([':id' => $itemId]);
+    $plan = $stmt->fetch();
+    if (!$plan) die('Plan not found');
+    $unit = (float)($plan['price_monthly'] ?? 0.00);
+}
 $total = $unit * $months;
 
 try {
@@ -32,13 +55,27 @@ try {
     $order_id = $pdo->lastInsertId();
 
     // create order item
-    $stmt = $pdo->prepare('INSERT INTO order_items (order_id, plan_id, quantity, unit_price, period_months) VALUES (:o,:p,1,:price,:pm)');
-    $stmt->execute([':o'=>$order_id,':p'=>$plan_id,':price'=>$unit,':pm'=>$months]);
+    $stmt = $pdo->prepare('INSERT INTO order_items (order_id, plan_id, service_id, quantity, unit_price, period_months, meta) VALUES (:o,:p,:s,1,:price,:pm,:meta)');
+    $stmt->execute([
+        ':o'=>$order_id,
+        ':p'=>$plan['id'] ?? null,
+        ':s'=>$service['id'] ?? null,
+        ':price'=>$unit,
+        ':pm'=>$months,
+        ':meta'=>$server ? json_encode(['server_id' => $server['id'], 'hostname' => $server['hostname']]) : null
+    ]);
     $item_id = $pdo->lastInsertId();
 
     // create subscription
-    $stmt = $pdo->prepare('INSERT INTO subscriptions (user_id, plan_id, order_item_id, started_at, expires_at, status) VALUES (:u,:p,:oi,NOW(), DATE_ADD(NOW(), INTERVAL :m MONTH), :st)');
-    $stmt->execute([':u'=>$user_id,':p'=>$plan_id,':oi'=>$item_id,':m'=>$months,':st'=>'active']);
+    $stmt = $pdo->prepare('INSERT INTO subscriptions (user_id, plan_id, service_id, server_id, order_item_id, started_at, expires_at, status) VALUES (:u,:p,:s,:srv,:oi,NOW(), DATE_ADD(NOW(), INTERVAL ' . $months . ' MONTH), :st)');
+    $stmt->execute([
+        ':u'=>$user_id,
+        ':p'=>$plan['id'] ?? null,
+        ':s'=>$service['id'] ?? null,
+        ':srv'=>$server['id'] ?? null,
+        ':oi'=>$item_id,
+        ':st'=>'active'
+    ]);
 
     // create invoice
     $stmt = $pdo->prepare('INSERT INTO invoices (order_id, amount, status, issued_at) VALUES (:o,:amt,:st,NOW())');

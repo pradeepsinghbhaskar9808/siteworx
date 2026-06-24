@@ -1,7 +1,20 @@
     <?php
        $pageTitle = "Affordable Dedicated Hosting in India, SiteWorx-India";
        $Metadescription="Start small and grow your server resources as your business expands. Our scalable dedicated hosting solutions are perfect for startups and growing businesses in India, SiteWorx-India.";
-    include('header.php'); ?>
+    include('header.php');
+    
+    // Load dedicated hosting plans
+    $dedicatedPlans = [];
+    if (isset($pdo)) {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE category = :cat AND status='active' ORDER BY price_monthly ASC");
+            $stmt->execute([':cat' => 'dedicated-hosting']);
+            $dedicatedPlans = $stmt->fetchAll();
+        } catch (Exception $e) {
+            $dedicatedPlans = [];
+        }
+    }
+    ?>
         <!-- content begin -->
           
         <!-- content begin -->
@@ -43,82 +56,33 @@
 								  <th scope="col">Ram</th>
 								  <th scope="col">CPU</th>
 								  <th scope="col">Disk</th>
-								  <th scope="col">Bandwith</th>
+								  <th scope="col">Bandwidth</th>
 								  <th scope="col">Price</th>
 								  <th scope="col">Setup Fee</th>
 								  <th scope="col"></th>
 								</tr>
 							  </thead>
 							  <tbody>
-								<tr>
-								  <th><span class="lbl">Ram</span>4 GB</th>
-								  <td><span class="lbl">CPU</span>2 Core</td>
-								  <td><span class="lbl">Disk</span>1 TB</td>
-								  <td><span class="lbl">Bandwith</span>10 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$59 monthly</span><span class="opt-2">$590 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>$20</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>4 GB</th>
-								  <td><span class="lbl">CPU</span>4 Core</td>
-								  <td><span class="lbl">Disk</span>2 TB</td>
-								  <td><span class="lbl">Bandwith</span>20 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$79 monthly</span><span class="opt-2">$790 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>$20</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>6 GB</th>
-								  <td><span class="lbl">CPU</span>4 Core</td>
-								  <td><span class="lbl">Disk</span>4 TB</td>
-								  <td><span class="lbl">Bandwith</span>30 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$99 monthly</span><span class="opt-2">$990 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>$15</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>6 GB</th>
-								  <td><span class="lbl">CPU</span>6 Core</td>
-								  <td><span class="lbl">Disk</span>6 TB</td>
-								  <td><span class="lbl">Bandwith</span>40 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$119 monthly</span><span class="opt-2">$1190 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>$15</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>8 GB</th>
-								  <td><span class="lbl">CPU</span>6 Core</td>
-								  <td><span class="lbl">Disk</span>8 TB</td>
-								  <td><span class="lbl">Bandwith</span>60 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$139 monthly</span><span class="opt-2">$1390 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>FREE</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>16 GB</th>
-								  <td><span class="lbl">CPU</span>8 Core</td>
-								  <td><span class="lbl">Disk</span>8 TB</td>
-								  <td><span class="lbl">Bandwith</span>80 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$159 monthly</span><span class="opt-2">$1590 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>FREE</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
-								
-								<tr>
-								  <th><span class="lbl">Ram</span>16 GB</th>
-								  <td><span class="lbl">CPU</span>8 Core</td>
-								  <td><span class="lbl">Disk</span>10 TB</td>
-								  <td><span class="lbl">Bandwith</span>100 TB</td>
-								  <td><span class="lbl">Price</span><span class="opt-1">$69 monthly</span><span class="opt-2">$1690 yearly</span></td>
-								  <td><span class="lbl">Setup Fee</span>FREE</td>
-								  <td><a href="#" class="btn-custom">Order Now</a></td>
-								</tr>
+								<?php
+								if (empty($dedicatedPlans)) {
+									echo '<tr><td colspan="7" class="text-center">No plans available at the moment.</td></tr>';
+								} else {
+									foreach ($dedicatedPlans as $plan) {
+										$specs = json_decode($plan['specs'], true);
+										?>
+										<tr>
+											<th><span class="lbl">Ram</span><?php echo htmlspecialchars($specs['ram'] ?? ''); ?></th>
+											<td><span class="lbl">CPU</span><?php echo htmlspecialchars($specs['cpu_cores'] ?? ''); ?></td>
+											<td><span class="lbl">Disk</span><?php echo htmlspecialchars($specs['storage'] ?? ''); ?></td>
+											<td><span class="lbl">Bandwidth</span><?php echo htmlspecialchars($specs['bandwidth'] ?? ''); ?></td>
+											<td><span class="lbl">Price</span><span class="opt-1"><?php echo htmlspecialchars($plan['currency']); ?> <?php echo number_format($plan['price_monthly'], 0); ?> monthly</span><span class="opt-2"><?php echo htmlspecialchars($plan['currency']); ?> <?php echo number_format($plan['price_yearly'], 0); ?> yearly</span></td>
+											<td><span class="lbl">Setup Fee</span><?php echo htmlspecialchars($plan['setup_fee'] > 0 ? $plan['currency'] . ' ' . number_format($plan['setup_fee'], 0) : 'FREE'); ?></td>
+											<td><a href="#" class="btn-custom">Order Now</a></td>
+										</tr>
+										<?php
+									}
+								}
+								?>
 							  </tbody>
 							</table>
 						</div>

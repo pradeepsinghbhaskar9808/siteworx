@@ -81,7 +81,15 @@
                                                 <?php if (!empty($specs['emails'])): ?><li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['emails']) . ' Email Accounts'; ?></li><?php endif; ?>
                                                 <?php if (!empty($specs['subdomains'])): ?><li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['subdomains']) . ' Sub Domains'; ?></li><?php endif; ?>
                                                 <?php if (!empty($specs['databases'])): ?><li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['databases']) . ' MySQL Database'; ?></li><?php endif; ?>
-                                            </ul>
+                                            <?php if (!empty($specs['free_setup'])): ?>
+                                                <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['free_setup']); ?></li>
+                                            <?php endif; ?>
+
+                                            <?php if (!empty($specs['uptime'])): ?>
+                                                <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['uptime']); ?></li>
+                                            <?php endif; ?>
+                                                    
+                                        </ul>
                                         </div>
                                         <div class="action">
                                             <a href="#" class="btn-custom mb10">Order Now</a>

@@ -9,6 +9,7 @@ function find_user_by_username($pdo, $username) {
 function login_user($pdo, $username, $password) {
     $user = find_user_by_username($pdo, $username);
     if (!$user) return false;
+    if (!empty($user['status']) && $user['status'] !== 'active') return false;
 
     // If password stored with PHP password_hash
     if (isset($user['password']) && strlen($user['password']) >= 60) {
@@ -53,10 +54,16 @@ function register_user($pdo, $name, $email, $username, $password) {
     return $pdo->lastInsertId();
 }
 
+function update_user_password($pdo, $userId, $password) {
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare('UPDATE login SET password = :password WHERE id = :id');
+    $stmt->execute([':password' => $hash, ':id' => $userId]);
+}
+
 function require_login() {
     if (session_status() !== PHP_SESSION_ACTIVE) session_start();
     if (empty($_SESSION['valid'])) {
-        header('Location: login');
+        header('Location: login.php');
         exit;
     }
 }
@@ -113,7 +120,7 @@ function get_user_role($pdo, $user) {
 function require_role($pdo, $allowed = []) {
     if (session_status() !== PHP_SESSION_ACTIVE) session_start();
     if (empty($_SESSION['id'])) {
-        header('Location: login'); exit;
+        header('Location: login.php'); exit;
     }
     $user = current_user($pdo);
     $role = get_user_role($pdo, $user);

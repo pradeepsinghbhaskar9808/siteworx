@@ -1,0 +1,7 @@
+[
+  {"category":"domain","name":".COM Domain Registration","sku":"domain-com","description":"COM domain registration per year.","meta":{"tld":".com","period":"year","source_page":"domain.php"},"price":851.29,"status":"active"},
+  {"category":"domain","name":".NET Domain Registration","sku":"domain-net","description":"NET domain registration per year.","meta":{"tld":".net","period":"year","source_page":"domain.php"},"price":1042.99,"status":"active"},
+  {"category":"domain","name":".ORG Domain Registration","sku":"domain-org","description":"ORG domain registration per year.","meta":{"tld":".org","period":"year","source_page":"domain.php"},"price":1000.39,"status":"active"},
+  {"category":"domain","name":".IN Domain Registration","sku":"domain-in","description":"IN domain registration per year.","meta":{"tld":".in","period":"year","source_page":"domain.php"},"price":638.29,"status":"active"},
+  {"category":"domain","name":".INFO Domain Registration","sku":"domain-info","description":"INFO domain registration per year.","meta":{"tld":".info","period":"year","source_page":"domain.php"},"price":354.29,"status":"active"}
+]
