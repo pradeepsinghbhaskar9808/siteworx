@@ -156,33 +156,105 @@ try {
 <div class="modal fade" id="assignModal" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="assign_service">
-			<div class="modal-header"><h5 class="modal-title">Assign Service to <span id="modal-username"></span></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-			<div class="modal-body">
-				<input type="hidden" name="user_id" id="modal-userid">
-				<div class="mb-2">
-					<label class="w-100">Plan
-						<select name="item_id" class="form-select">
-							<?php foreach ($plans as $p): ?>
-								<option value="plan:<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['name']); ?> - <?php echo sw_format_money($p['price_monthly'], $p['currency'] ?? 'INR'); ?></option>
-							<?php endforeach; ?>
-							<?php foreach ($services as $s): ?>
-								<option value="service:<?php echo $s['id']; ?>"><?php echo htmlspecialchars($s['name']); ?> - <?php echo sw_format_money($s['price']); ?></option>
-							<?php endforeach; ?>
-							<?php foreach ($servers as $srv): ?>
-								<option value="server:<?php echo $srv['id']; ?>">Server: <?php echo htmlspecialchars($srv['hostname']); ?> <?php echo htmlspecialchars($srv['ip_address'] ? '(' . $srv['ip_address'] . ')' : ''); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</label>
-				</div>
-				<div class="mb-2"><label>Period (months)<br><input name="period_months" value="1" class="form-control"></label></div>
-			<div class="col-md-2">
-    <label class="form-label">Quantity</label>
-    <input type="number" min="1" name="quantity" value="1" class="form-control" required>
-</div>
-			</div>
-			<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button><button class="btn btn-primary">Assign</button></div>
-			</form>
+				<<form method="post" action="assign_service">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            Assign Service to <span id="modal-username"></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+
+        <input type="hidden" name="user_id" id="modal-userid">
+
+        <div class="mb-3">
+            <label class="form-label">Plan / Service</label>
+            <select name="item_id" class="form-select">
+
+                <?php foreach ($plans as $p): ?>
+                    <option value="plan:<?php echo $p['id']; ?>">
+                        <?php echo htmlspecialchars($p['name']); ?>
+                        -
+                        <?php echo sw_format_money($p['price_monthly'], $p['currency'] ?? 'INR'); ?>
+                    </option>
+                <?php endforeach; ?>
+
+                <?php foreach ($services as $s): ?>
+                    <option value="service:<?php echo $s['id']; ?>">
+                        <?php echo htmlspecialchars($s['name']); ?>
+                        -
+                        <?php echo sw_format_money($s['price']); ?>
+                    </option>
+                <?php endforeach; ?>
+
+                <?php foreach ($servers as $srv): ?>
+                    <option value="server:<?php echo $srv['id']; ?>">
+                        Server :
+                        <?php echo htmlspecialchars($srv['hostname']); ?>
+                        <?php echo $srv['ip_address'] ? '(' . htmlspecialchars($srv['ip_address']) . ')' : ''; ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Period (Months)</label>
+                <input type="number"
+                       name="period_months"
+                       class="form-control"
+                       value="1"
+                       min="1"
+                       required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Quantity</label>
+                <input type="number"
+                       name="quantity"
+                       class="form-control"
+                       value="1"
+                       min="1"
+                       required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">
+                    Manual Amount
+                </label>
+
+                <input type="number"
+                       name="manual_amount"
+                       class="form-control"
+                       step="0.01"
+                       min="0"
+                       placeholder="Leave blank for default price">
+
+                <small class="text-muted">
+                    Leave blank to use Plan/Service price.
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Close
+        </button>
+
+        <button class="btn btn-primary">
+            Assign
+        </button>
+    </div>
+
+</form>
 		</div>
 	</div>
 </div>

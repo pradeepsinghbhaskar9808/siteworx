@@ -36,8 +36,29 @@ $orders = $stmt->fetchAll();
       <td><?php echo htmlspecialchars($o['currency']); ?> <?php echo number_format($o['total_amount'],2); ?></td>
       <td><?php echo htmlspecialchars($o['status']); ?></td>
       <td><?php echo htmlspecialchars($o['created_at']); ?></td>
-      <td><?php if ($o['invoice_id']): ?><a href="generate_invoice?invoice_id=<?php echo $o['invoice_id']; ?>">#<?php echo $o['invoice_id']; ?> <?php echo htmlspecialchars($o['invoice_status']); ?></a><?php endif; ?></td>
-      <td>
+<td>
+    <?php if ($o['invoice_id']): ?>
+
+        <a class="btn btn-sm btn-outline-primary"
+           href="generate_invoice?invoice_id=<?php echo $o['invoice_id']; ?>">
+            View Invoice
+        </a>
+
+        <!-- <?php if ($role === 'admin'): ?>
+            <a class="btn btn-sm btn-warning"
+               href="edit_invoice.php?invoice_id=<?php echo $o['invoice_id']; ?>">
+                Edit Invoice
+            </a>
+        <?php endif; ?> -->
+
+        <!-- <br>
+        <small class="text-muted">
+            #<?php echo $o['invoice_id']; ?>
+            (<?php echo htmlspecialchars($o['invoice_status']); ?>)
+        </small> -->
+
+    <?php endif; ?>
+</td>      <td>
         <?php if (in_array($role, ['admin','manager'], true)): ?>
           <form method="post" class="d-flex gap-2">
             <input type="hidden" name="order_id" value="<?php echo $o['id']; ?>">
