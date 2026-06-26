@@ -1,9 +1,21 @@
  <?php 
  $pageTitle = "G-Suite Made in India: Elevate Your Business Efficiency SiteWorx-India";
    $canonical='https://www.siteworx.in/gshuit"';
-   $Metadescription="G-Suite for Small Businesses in India,Discover how G-Suite can transform your Indian business with powerful cloud-based tools for communication, collaboration, and productivity. SiteWorx-India";
+  $Metadescription="G-Suite for Small Businesses in India,Discover how G-Suite can transform your Indian business with powerful cloud-based tools for communication, collaboration, and productivity. SiteWorx-India";
   $metakeywords="Web hosting in India, Best web hosting in India, cheapest web hosting in india, web hosting company in india, best web hosting company in india, web hosting india, web hosting services in india, domain name in india, domain name, web hosting companies India, email hosting, best web hosting, cheap web hosting, Bulk Email Marketing Server, Best web development in india, web development in india, web design in india, Best SEO Service in India, Best ADS Service In india, Best Facebook ADS in india, Best web Development In Jaipur, Best Instagram ADS In India";
    include('header.php');
+
+   // Load Google Workspace plans from admin hosting_plans table.
+   $gsuitePlans = [];
+   if (isset($pdo)) {
+       try {
+           $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE category = :cat AND status='active' ORDER BY price_monthly ASC");
+           $stmt->execute([':cat' => 'gsuite']);
+           $gsuitePlans = $stmt->fetchAll();
+       } catch (Exception $e) {
+           $gsuitePlans = [];
+       }
+   }
    ?>
         <!-- content begin -->
  <!-- content begin -->
@@ -42,6 +54,70 @@
                                 <div class="spacer-20"></div>
                             </div>
                         </div>
+                                        <?php if (!empty($gsuitePlans)): ?>
+                                            <?php foreach ($gsuitePlans as $index => $plan): ?>
+                                                <?php
+                                                $specs = json_decode($plan['specs'] ?? '{}', true);
+                                                if (!is_array($specs)) {
+                                                    $specs = [];
+                                                }
+                                                $features = $specs['features'] ?? [];
+                                                if (!is_array($features)) {
+                                                    $features = [];
+                                                }
+                                                $orderUrl = $specs['order_url'] ?? 'https://siteworx.in/';
+                                                $buttonText = $specs['button_text'] ?? 'Order Now';
+                                                $monthlyPrice = (float)($plan['price_monthly'] ?? 0);
+                                                $yearlyPrice = (float)($plan['price_yearly'] ?? 0);
+                                                ?>
+                                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                                    <div class="pricing-s1 pricing-gsuite mb30">
+                                                        <?php if ($index === 1): ?>
+                                                            <div class="ribbon">HOT</div>
+                                                        <?php endif; ?>
+                                                        <div class="top">
+                                                            <h2><?php echo htmlspecialchars($plan['name']); ?></h2>
+                                                            <p class="price">
+                                                                <?php if ($monthlyPrice > 0): ?>
+                                                                    <span class="txt">Start from</span>
+                                                                    <span class="currency"><?php echo htmlspecialchars($plan['currency'] ?? 'INR'); ?></span>
+                                                                    <span class="m opt-1"><?php echo number_format($monthlyPrice, 0); ?></span>
+                                                                    <span class="y opt-2"><?php echo number_format($yearlyPrice > 0 ? $yearlyPrice : ($monthlyPrice * 12), 0); ?></span>
+                                                                    <span class="month">p/mo</span>
+                                                                <?php else: ?>
+                                                                    <span><a href="<?php echo htmlspecialchars($orderUrl); ?>" class="btn-custom"><?php echo htmlspecialchars($buttonText); ?></a></span>
+                                                                <?php endif; ?>
+                                                            </p>
+                                                        </div>
+                                                        <div class="bottom">
+                                                            <ul>
+                                                                <?php foreach ($features as $feature): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($feature); ?></li>
+                                                                <?php endforeach; ?>
+                                                                <?php if (isset($specs['email'])): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['email']); ?></li>
+                                                                <?php endif; ?>
+                                                                <?php if (isset($specs['meetings'])): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['meetings']); ?></li>
+                                                                <?php endif; ?>
+                                                                <?php if (isset($specs['storage'])): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['storage']); ?></li>
+                                                                <?php endif; ?>
+                                                                <?php if (isset($specs['security'])): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['security']); ?></li>
+                                                                <?php endif; ?>
+                                                                <?php if (isset($specs['support'])): ?>
+                                                                    <li><i class="fa fa-check-square"></i><?php echo htmlspecialchars($specs['support']); ?></li>
+                                                                <?php endif; ?>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="gsuit-action">
+                                                            <a href="<?php echo htmlspecialchars($orderUrl); ?>" class="btn-custom"><?php echo htmlspecialchars($buttonText); ?></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
                                         <div class="col-lg-3 col-md-6 col-sm-12">
                                             <div class="pricing-s1 pricing-gsuite mb30">
                                                 <div class="top">
@@ -171,6 +247,7 @@
 												
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                     
                                     </div>
                                 </div>

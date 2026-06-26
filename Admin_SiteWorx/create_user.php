@@ -2,55 +2,312 @@
 require_once 'connection.php';
 require_once 'lib_auth.php';
 require_once 'lib_admin.php';
+
 require_role($pdo, ['admin','manager']);
 
-$roles = $pdo->query('SELECT id,name FROM roles ORDER BY id')->fetchAll();
-$managers = $pdo->query("SELECT id,name,username FROM login WHERE role_id IN (1,2) AND status='active' ORDER BY name,username")->fetchAll();
+$roles = $pdo->query("SELECT id,name FROM roles ORDER BY name")->fetchAll();
+$managers = $pdo->query("
+    SELECT id,name,username
+    FROM login
+    WHERE role_id IN (1,2)
+    AND status='active'
+    ORDER BY name,username
+")->fetchAll();
+
 $current = current_user($pdo);
 $currentRole = get_user_role($pdo, $current);
+
 $error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $role_id = $currentRole === 'admin' ? (int)($_POST['role_id'] ?? 3) : 3;
-    $manager_id = $currentRole === 'admin' ? (int)($_POST['manager_id'] ?? 0) : (int)$current['id'];
-    if ($username && $password) {
-        $id = register_user($pdo, $name, $email, $username, $password);
-        $stmt = $pdo->prepare('UPDATE login SET role_id = :rid, manager_id = :mid WHERE id = :id');
-        $stmt->execute([':rid'=>$role_id, ':mid'=>($manager_id ?: null), ':id'=>$id]);
-        header('Location: users.php'); exit;
+
+    $name         = trim($_POST['name'] ?? '');
+    $username     = trim($_POST['username'] ?? '');
+    $email        = trim($_POST['email'] ?? '');
+    $password     = $_POST['password'] ?? '';
+
+    $company_name = trim($_POST['company_name'] ?? '');
+    $address      = trim($_POST['address'] ?? '');
+    $city         = trim($_POST['city'] ?? '');
+    $state        = trim($_POST['state'] ?? '');
+    $pin_code     = trim($_POST['pin_code'] ?? '');
+    $gst_number   = trim($_POST['gst_number'] ?? '');
+
+    $role_id = $currentRole === 'admin'
+        ? (int)($_POST['role_id'] ?? 3)
+        : 3;
+
+    $manager_id = $currentRole === 'admin'
+        ? (int)($_POST['manager_id'] ?? 0)
+        : (int)$current['id'];
+
+    if (empty($username) || empty($password)) {
+        $error = "Username and Password are required.";
     } else {
-        $error = 'Username and password required';
+
+        try {
+
+            $id = register_user(
+                $pdo,
+                $name,
+                $email,
+                $username,
+                $password
+            );
+
+            $stmt = $pdo->prepare("
+                UPDATE login
+                SET
+                    role_id = :role_id,
+                    manager_id = :manager_id,
+                    company_name = :company_name,
+                    address = :address,
+                    city = :city,
+                    state = :state,
+                    pin_code = :pin_code,
+                    gst_number = :gst_number
+                WHERE id = :id
+            ");
+
+            $stmt->execute([
+                ':role_id'      => $role_id,
+                ':manager_id'   => $manager_id ?: null,
+                ':company_name' => $company_name,
+                ':address'      => $address,
+                ':city'         => $city,
+                ':state'        => $state,
+                ':pin_code'     => $pin_code,
+                ':gst_number'   => $gst_number,
+                ':id'           => $id
+            ]);
+
+            header("Location: users.php?success=1");
+            exit;
+
+        } catch (PDOException $e) {
+            $error = $e->getMessage();
+        }
     }
 }
 ?>
+
 <?php include '_header.php'; ?>
-<div class="card">
-  <div class="card-body">
-    <h4>Create User</h4>
-    <?php if ($error): ?><div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
-    <form method="post">
-      <div class="mb-2"><label>Name<input class="form-control" name="name"></label></div>
-      <div class="mb-2"><label>Username<input class="form-control" name="username" required></label></div>
-      <div class="mb-2"><label>Email<input class="form-control" name="email" type="email"></label></div>
-      <div class="mb-2"><label>Password<input class="form-control" name="password" type="password" required></label></div>
-      <?php if ($currentRole === 'admin'): ?>
-      <div class="mb-2"><label>Role
-        <select name="role_id" class="form-select">
-          <?php foreach($roles as $r): ?><option value="<?php echo $r['id']; ?>"><?php echo htmlspecialchars($r['name']); ?></option><?php endforeach; ?>
-        </select>
-      </label></div>
-      <div class="mb-2"><label>Manager
-        <select name="manager_id" class="form-select">
-          <option value="">No manager</option>
-          <?php foreach($managers as $m): ?><option value="<?php echo $m['id']; ?>"><?php echo htmlspecialchars($m['name'] ?: $m['username']); ?></option><?php endforeach; ?>
-        </select>
-      </label></div>
-      <?php endif; ?>
-      <button class="btn btn-primary">Create</button>
-    </form>
-  </div>
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create New User</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <?php if($error): ?>
+                        <div class="alert alert-danger">
+                            <?php echo htmlspecialchars($error); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form method="post">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Full Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Username *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Password *
+                                </label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    required>
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <h5 class="mb-3">
+                            Company Information
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Company Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="company_name"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    GST Number
+                                </label>
+                                <input
+                                    type="text"
+                                    name="gst_number"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label">
+                                    Address
+                                </label>
+                                <textarea
+                                    name="address"
+                                    rows="3"
+                                    class="form-control"></textarea>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    City
+                                </label>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    State
+                                </label>
+                                <input
+                                    type="text"
+                                    name="state"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">
+                                    PIN Code
+                                </label>
+                                <input
+                                    type="text"
+                                    name="pin_code"
+                                    class="form-control">
+                            </div>
+
+                        </div>
+
+                        <?php if($currentRole === 'admin'): ?>
+
+                            <hr>
+
+                            <h5 class="mb-3">
+                                User Access
+                            </h5>
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        Role
+                                    </label>
+
+                                    <select
+                                        name="role_id"
+                                        class="form-select">
+
+                                        <?php foreach($roles as $role): ?>
+                                            <option value="<?php echo $role['id']; ?>">
+                                                <?php echo htmlspecialchars($role['name']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        Manager
+                                    </label>
+
+                                    <select
+                                        name="manager_id"
+                                        class="form-select">
+
+                                        <option value="">
+                                            No Manager
+                                        </option>
+
+                                        <?php foreach($managers as $manager): ?>
+                                            <option value="<?php echo $manager['id']; ?>">
+                                                <?php echo htmlspecialchars(
+                                                    $manager['name'] ?: $manager['username']
+                                                ); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                        <div class="text-end">
+
+                            <a href="users.php"
+                               class="btn btn-secondary">
+                                Cancel
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+                                Create User
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
 <?php include '_footer.php'; ?>

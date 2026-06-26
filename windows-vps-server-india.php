@@ -1,5 +1,5 @@
    <?php 
-       $pageTitle = ""Affordable VPS Hosting India: Your Gateway to Online Success, SiteWorx-india"";
+       $pageTitle = "Affordable VPS Hosting India: Your Gateway to Online Success, SiteWorx-india" ;
 
    $Metadescription="Experience lightning-fast website loading speeds with Site-Worx India's VPS hosting solutions. With data centers strategically located across India, your site will benefit from low latency and superior performance.";
   $metakeywords="Web hosting in India, Best web hosting in India, cheapest web hosting in india, web hosting company in india, best web hosting company in india, web hosting india, web hosting services in india, domain name in india, domain name, web hosting companies India, email hosting, best web hosting, cheap web hosting, Bulk Email Marketing Server, Best web development in india, web development in india, web design in india, Best SEO Service in India, Best ADS Service In india, Best Facebook ADS in india, Best web Development In Jaipur, Best Instagram ADS In India";
