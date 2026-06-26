@@ -114,167 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
 }
 ?>
 <?php include '_header.php'; ?>
-<style>
-/* ── Reset & Base ─────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+  <link href="invoice.css" rel="stylesheet">
 
-/* ── Page wrapper ─────────────────────────────────────────────── */
-.sw-inv-page   { background: #f0f4f8; padding: 24px 0; min-height: 100vh; }
-.sw-inv-shell  { max-width: 860px; margin: 0 auto; padding: 0 16px; }
-
-/* ── Action bar ───────────────────────────────────────────────── */
-.sw-inv-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-}
-.sw-inv-actions h1  { font-size: 20px; font-weight: 600; color: #1e293b; margin: 0 0 2px; }
-.sw-inv-actions p   { font-size: 13px; color: #64748b; margin: 0; }
-.sw-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 6px; font-size: 13px;
-    font-weight: 500; cursor: pointer; border: none; text-decoration: none;
-    transition: filter .15s;
-}
-.sw-btn:hover { filter: brightness(.93); }
-.sw-btn-outline {
-    background: #fff; color: #374151;
-    border: 1px solid #d1d5db;
-}
-.sw-btn-primary { background: #0f1f3d; color: #fff; }
-
-/* ── Paper card ───────────────────────────────────────────────── */
-.sw-inv-paper {
-    background: #fff;
-    border: 1px solid #dde5f0;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(15,31,61,.08);
-}
-
-/* ── Header band ──────────────────────────────────────────────── */
-.sw-inv-header {
-    background: #0f1f3d;
-    padding: 28px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-}
-.sw-inv-logo-img   { height: 40px; display: block; background: white;
-    padding: 5px;
-    border-radius: 30px; }
-.sw-inv-logo-text  {
-    font-size: 26px; font-weight: 700; color: #fff;
-    letter-spacing: .4px; display: none;
-}
-.sw-inv-tagline    { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 6px; letter-spacing: .03em; }
-.sw-inv-gstin      { font-size: 11px; color: rgba(255,255,255,.75); font-family: monospace; margin-top: 3px; }
-.sw-inv-hdr-right  { text-align: right; flex-shrink: 0; }
-.sw-inv-lbl        { font-size: 10px; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.5); }
-.sw-inv-number     { font-size: 22px; font-weight: 600; color: #fff; letter-spacing: .02em; margin-top: 4px; }
-.sw-inv-badge      {
-    display: inline-block; margin-top: 10px;
-    padding: 4px 12px; border-radius: 4px;
-    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
-}
-.sw-inv-badge.paid     { background: #22c55e; color: #fff; }
-.sw-inv-badge.pending  { background: #f59e0b; color: #fff; }
-.sw-inv-badge.void     { background: #94a3b8; color: #fff; }
-
-/* ── Body ─────────────────────────────────────────────────────── */
-.sw-inv-body { padding: 28px 32px; }
-
-/* ── Meta grid (3 cols) ───────────────────────────────────────── */
-.sw-inv-meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 26px; }
-.sw-inv-meta-card {
-    border: 1px solid #e8eef6; border-radius: 8px; padding: 16px;
-}
-.sw-inv-meta-card h6 {
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .08em; color: #94a3b8;
-    border-bottom: 1px solid #f1f5f9; padding-bottom: 7px; margin: 0 0 10px;
-}
-.sw-inv-meta-card .mc-name  { font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 3px; }
-.sw-inv-meta-card .mc-sub   { font-size: 12px; color: #64748b; line-height: 1.6; }
-.sw-inv-meta-card .mc-gstin { font-size: 11px; font-family: monospace; color: #0f1f3d; font-weight: 600; margin-top: 6px; }
-.sw-detail-row  { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; }
-.sw-detail-row .dl { color: #94a3b8; }
-.sw-detail-row .dv { font-weight: 500; color: #1e293b; }
-
-/* ── Table ────────────────────────────────────────────────────── */
-.sw-inv-table-wrap {
-    border: 1px solid #e8eef6; border-radius: 8px;
-    overflow: hidden; margin-bottom: 22px;
-}
-.sw-inv-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.sw-inv-table thead tr { background: #f8fafc; }
-.sw-inv-table th {
-    padding: 10px 12px; font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: .06em; color: #94a3b8;
-    border-bottom: 1px solid #e8eef6; text-align: left;
-}
-.sw-inv-table th.tc { text-align: center; }
-.sw-inv-table th.tr { text-align: right; }
-.sw-inv-table td {
-    padding: 13px 12px; font-size: 12px; color: #334155;
-    border-bottom: 1px solid #f1f5f9; vertical-align: top;
-}
-.sw-inv-table tr:last-child td { border-bottom: none; }
-.sw-inv-table td.tc { text-align: center; }
-.sw-inv-table td.tr { text-align: right; }
-.sw-item-name  { font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 2px; }
-.sw-item-cat   { font-size: 11px; color: #94a3b8; }
-.sw-item-host  { font-size: 11px; color: #64748b; font-family: monospace; margin-top: 2px; }
-.sw-gst-rate   { font-size: 12px; font-weight: 600; color: #334155; }
-.sw-gst-amt    { font-size: 11px; color: #94a3b8; }
-.sw-line-gross { font-weight: 600; color: #1e293b; }
-
-/* ── Totals ───────────────────────────────────────────────────── */
-.sw-totals-outer { display: flex; justify-content: flex-end; margin-bottom: 24px; }
-.sw-totals-card  {
-    width: 300px; border: 1px solid #e8eef6;
-    border-radius: 8px; overflow: hidden;
-}
-.sw-tot-line {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 9px 16px; font-size: 13px;
-    border-bottom: 1px solid #f1f5f9;
-}
-.sw-tot-line:last-child { border-bottom: none; }
-.sw-tot-line .tl  { color: #64748b; }
-.sw-tot-line .tv  { font-weight: 500; color: #1e293b; }
-.sw-tot-line.sw-grand { background: #0f1f3d; }
-.sw-tot-line.sw-grand .tl { color: rgba(255,255,255,.7); font-size: 13px; }
-.sw-tot-line.sw-grand .tv { color: #fff; font-size: 17px; font-weight: 600; }
-
-/* ── Footer note ──────────────────────────────────────────────── */
-.sw-inv-footer {
-    display: flex; align-items: flex-start;
-    gap: 20px; border-top: 1px solid #f1f5f9; padding-top: 20px;
-}
-.sw-inv-note {
-    flex: 1; background: #f8fafc; border: 1px solid #e8eef6;
-    border-radius: 8px; padding: 14px 16px;
-    font-size: 12px; color: #64748b; line-height: 1.7;
-}
-.sw-inv-note strong { color: #1e293b; }
-.sw-inv-contact { text-align: right; font-size: 12px; color: #64748b; line-height: 1.8; flex-shrink: 0; }
-.sw-inv-contact strong { color: #1e293b; display: block; }
-
-/* ── Print ────────────────────────────────────────────────────── */
-@page { size: A4; margin: 12mm; }
-@media print {
-    header, nav, .sw-inv-actions, .alert { display: none !important; }
-    body, .sw-inv-page { background: #fff !important; }
-    .sw-inv-shell { padding: 0 !important; max-width: none !important; }
-    .sw-inv-paper { box-shadow: none !important; border: none !important; }
-    .sw-inv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .sw-inv-badge, .sw-totals-card .sw-grand { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .sw-inv-body { padding: 20px 24px !important; }
-}
-</style>
 
 <?php if ($emailSent): ?>
   <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -416,12 +257,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
           <table class="sw-inv-table">
             <thead>
               <tr>
-                <th style="width:33%;">Item Description</th>
-                <th class="tc" style="width:10%;">Period</th>
-                <th class="tc" style="width:7%;">Qty</th>
-                <th class="tr" style="width:16%;">Taxable Value</th>
-                <th class="tc" style="width:17%;">GST</th>
-                <th class="tr" style="width:17%;">Gross Total</th>
+                <th style="width:30%;">Item Description</th>
+                <th class="tc">Period</th>
+                <th class="tc">Qty</th>
+                <th class="tr">Unit Price</th>
+                <th class="tr">Total</th>
+                <th class="tc">GST</th>
+                <th class="tr">Grand Total</th>
               </tr>
             </thead>
             <tbody>
@@ -431,24 +273,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
                 $itemName    = $it['plan_name']    ?: ($it['service_name'] ?: ($meta['hostname'] ?? 'Service'));
                 $itemCategory = $it['plan_category'] ?: ($it['service_type'] ?: (!empty($meta['hostname']) ? 'Server Infra' : 'General'));
                 $lineGross   = (float)$it['unit_price'] * (int)$it['quantity'] * max(1, (int)$it['period_months']);
-              ?>
+            
+                $qty       = max(1, (int)$it['quantity']);
+                $period    = max(1, (int)$it['period_months']);
+
+                $unitPrice = (float)$it['unit_price'];
+                $total     = $unitPrice * $qty * $period;
+            ?>
               <tr>
-                <td>
-                  <div class="sw-item-name"><?php echo htmlspecialchars($itemName); ?></div>
-                  <div class="sw-item-cat">Category: <?php echo htmlspecialchars($itemCategory); ?></div>
-                  <?php if (!empty($meta['hostname'])): ?>
-                    <div class="sw-item-host">Host: <?php echo htmlspecialchars($meta['hostname']); ?></div>
-                  <?php endif; ?>
-                </td>
-                <td class="tc"><?php echo (int)$it['period_months']; ?> Mth(s)</td>
-                <td class="tc"><?php echo (int)$it['quantity']; ?></td>
-                <td class="tr"><?php echo sw_invoice_money($it['_base_price'], $currency); ?></td>
-                <td class="tc">
-                  <div class="sw-gst-rate"><?php echo number_format($it['_gst_rate'], 1); ?>%</div>
-                  <div class="sw-gst-amt"><?php echo sw_invoice_money($it['_gst_amount'], $currency); ?></div>
-                </td>
-                <td class="tr sw-line-gross"><?php echo sw_invoice_money($lineGross, $currency); ?></td>
-              </tr>
+    <td>
+        <div class="sw-item-name"><?php echo htmlspecialchars($itemName); ?></div>
+        <div class="sw-item-cat">
+            Category: <?php echo htmlspecialchars($itemCategory); ?>
+        </div>
+
+        <?php if (!empty($meta['hostname'])): ?>
+            <div class="sw-item-host">
+                Host: <?php echo htmlspecialchars($meta['hostname']); ?>
+            </div>
+        <?php endif; ?>
+    </td>
+
+    <td class="tc"><?php echo $period; ?> Month(s)</td>
+
+    <td class="tc"><?php echo $qty; ?></td>
+
+    <td class="tr">
+        <?php echo sw_invoice_money($unitPrice, $currency); ?>
+    </td>
+
+    <td class="tr">
+        <?php echo sw_invoice_money($unitPrice * $qty * $period, $currency); ?>
+    </td>
+
+    <td class="tc">
+        <div><?php echo number_format($it['_gst_rate'],1); ?>%</div>
+        <div><?php echo sw_invoice_money($it['_gst_amount'], $currency); ?></div>
+    </td>
+
+    <td class="tr">
+        <?php echo sw_invoice_money($total, $currency); ?>
+    </td>
+</tr>
               <?php endforeach; ?>
               <?php if (!$items): ?>
                 <tr>
@@ -462,51 +328,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
         </div>
 
         <!-- Totals -->
-        <div class="sw-totals-outer">
-          <div class="sw-totals-card">
-            <div class="sw-tot-line">
-              <span class="tl">Subtotal (excl. tax)</span>
-              <span class="tv"><?php echo sw_invoice_money($subtotalExclTax, $currency); ?></span>
-            </div>
+       <div class="sw-totals-outer d-flex justify-content-between align-items-start mt-4">
 
-            <?php if ($currency === 'INR'): ?>
-              <?php if ($isIntrastate): ?>
+<!-- Notes & Bank Details -->
+<div class="flex-1 text-left text-[11px] leading-5 text-gray-700">
+
+    <h5 class="text-sm font-semibold text-gray-900 mb-1 ">
+        Notes
+    </h5>
+
+    <p class="mb-1 small">
+        Thank you for your business. We appreciate your trust and look forward to serving you again.
+    </p>
+
+    <h6 class="text-sm font-semibold text-gray-900 ">
+        Bank Account Details
+    </h6>
+
+    <div class="space-y-1">
+        <div class="flex fs-6">
+            <span class="w-28 ">Bank Name</span>
+            <span class="mx-3 fs-6"> : </span>
+            <span class="small">HDFC Bank</span>
+        </div>
+
+        <div class="flex fs-6">
+            <span class="w-28 fs-6">Payee Name</span>
+            <span class="mx-2">:</span>
+            <span class="small">Site Worx Infotech</span>
+        </div>
+
+        <div class="flex fs-6">
+            <span class="w-28 fs-6">Account No.</span>
+            <span class="mx-2"> :</span>
+            <span class="small">50200057304581</span>
+        </div>
+
+        <div class="flex fs-6">
+            <span class="w-28 ">IFSC Code</span>
+            <span class="mx-4">:</span>
+            <span class="small">HDFC0003922</span>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Invoice Totals -->
+    <div class="sw-totals-card" style="min-width:320px;">
+
+        <div class="sw-tot-line">
+            <span class="tl">Subtotal (excl. tax)</span>
+            <span class="tv"><?php echo sw_invoice_money($subtotalExclTax, $currency); ?></span>
+        </div>
+
+        <?php if ($currency === 'INR'): ?>
+            <?php if ($isIntrastate): ?>
+
                 <div class="sw-tot-line">
-                  <span class="tl">CGST (<?php echo number_format($inv['tax_rate'] / 2, 2); ?>%)</span>
-                  <span class="tv"><?php echo sw_invoice_money($totalGstCalculated / 2, $currency); ?></span>
+                    <span class="tl">CGST (<?php echo number_format($inv['tax_rate']/2,2); ?>%)</span>
+                    <span class="tv"><?php echo sw_invoice_money($totalGstCalculated/2, $currency); ?></span>
                 </div>
+
                 <div class="sw-tot-line">
-                  <span class="tl">SGST (<?php echo number_format($inv['tax_rate'] / 2, 2); ?>%)</span>
-                  <span class="tv"><?php echo sw_invoice_money($totalGstCalculated / 2, $currency); ?></span>
+                    <span class="tl">SGST (<?php echo number_format($inv['tax_rate']/2,2); ?>%)</span>
+                    <span class="tv"><?php echo sw_invoice_money($totalGstCalculated/2, $currency); ?></span>
                 </div>
-              <?php else: ?>
-                <div class="sw-tot-line">
-                  <span class="tl">IGST (<?php echo number_format($inv['tax_rate'] ?? 18, 2); ?>%)</span>
-                  <span class="tv"><?php echo sw_invoice_money($totalGstCalculated, $currency); ?></span>
-                </div>
-              <?php endif; ?>
+
             <?php else: ?>
-              <div class="sw-tot-line">
-                <span class="tl">Total Tax</span>
-                <span class="tv"><?php echo sw_invoice_money($totalGstCalculated, $currency); ?></span>
-              </div>
+
+                <div class="sw-tot-line">
+                    <span class="tl">IGST (<?php echo number_format($inv['tax_rate'] ?? 18,2); ?>%)</span>
+                    <span class="tv"><?php echo sw_invoice_money($totalGstCalculated, $currency); ?></span>
+                </div>
+
             <?php endif; ?>
 
-            <div class="sw-tot-line sw-grand">
-              <span class="tl">Grand Total Due</span>
-              <span class="tv"><?php echo sw_invoice_money($amountDue, $currency); ?></span>
+        <?php else: ?>
+
+            <div class="sw-tot-line">
+                <span class="tl">Total Tax</span>
+                <span class="tv"><?php echo sw_invoice_money($totalGstCalculated, $currency); ?></span>
             </div>
-          </div>
+
+        <?php endif; ?>
+
+        <div class="sw-tot-line sw-grand">
+            <span class="tl"><strong>Grand Total Due</strong></span>
+            <span class="tv"><strong><?php echo sw_invoice_money($amountDue, $currency); ?></strong></span>
         </div>
+
+    </div>
+
+</div>
 
         <!-- Footer -->
         <div class="sw-inv-footer">
           <div class="sw-inv-note">
-            <strong>Declarations &amp; Terms</strong><br>
-            This is a computer-generated tax invoice and does not require a physical signature.
-            Services once provisioned are governed by our standard SLA. Please clear all dues
-            before the mapped expiry interval to avoid service interruption.
-          </div>
+        <strong>Terms &amp; Conditions</strong>
+
+        <ol style="margin-top:8px;padding-left:18px;">
+            <li>If applicable, deduct <strong>2% TDS</strong> only.</li>
+
+            <li>Any upgradations by Microsoft during the tenure will be applicable to the end client.</li>
+
+            <li><strong>SUBJECT TO JAIPUR JURISDICTION.</strong></li>
+        </ol>
+    </div>
           <div class="sw-inv-contact">
             <strong>SiteWorx Tech Support</strong>
             support@siteworx.in<br>

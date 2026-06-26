@@ -57,6 +57,7 @@ $planCategories = [
     'Other' => [
         'email-marketing' => 'Email Marketing',
         'gsuite' => 'Google Workspace',
+        'office365' => 'Microsoft 365',
     ],
 ];
 $currentCategory = $editPlan['category'] ?? 'shared-linux';

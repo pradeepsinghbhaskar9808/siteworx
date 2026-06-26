@@ -70,6 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         <label class="form-label">Quantity</label>
                         <input type="number" min="1" name="quantity" value="1" class="form-control" required>
                     </div>
+                    <div class="col-md-2">
+    <label class="form-label">Manual Amount</label>
+    <input type="number"
+           name="manual_amount"
+           class="form-control"
+           step="0.01"
+           min="0"
+           placeholder="Auto">
+    <small class="text-muted">Leave blank to use default price.</small>
+</div>
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary">Assign Service</button>
@@ -87,6 +97,7 @@ $user_id  = (int)($_POST['user_id'] ?? 0);
 $item     = (string)($_POST['item_id'] ?? '');
 $months   = max(1, (int)($_POST['period_months'] ?? 1));
 $quantity = max(1, (int)($_POST['quantity'] ?? 1));
+$manualAmount = trim($_POST['manual_amount'] ?? '');
 
 if (!$user_id || !$item || !sw_can_manage_user($pdo, $user_id)) {
     die('Missing params or unauthorized access');
@@ -105,24 +116,47 @@ $plan = $service = $server = null;
 $currency = 'INR';
 
 if ($type === 'service') {
-    $stmt = $pdo->prepare('SELECT * FROM service_catalog WHERE id = :id LIMIT 1');
-    $stmt->execute([':id' => $itemId]);
+
+    $stmt = $pdo->prepare("SELECT * FROM service_catalog WHERE id=:id LIMIT 1");
+    $stmt->execute([':id'=>$itemId]);
     $service = $stmt->fetch();
-    if (!$service) die('Service not found');
-    $unit = (float)($service['price'] ?? 0.00);
+
+    if (!$service) {
+        die('Service not found');
+    }
+
+    $unit = (float)$service['price'];
+
 } elseif ($type === 'server') {
-    $stmt = $pdo->prepare('SELECT * FROM servers WHERE id = :id LIMIT 1');
-    $stmt->execute([':id' => $itemId]);
+
+    $stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:id LIMIT 1");
+    $stmt->execute([':id'=>$itemId]);
     $server = $stmt->fetch();
-    if (!$server) die('Server not found');
-    $unit = 0.00;
+
+    if (!$server) {
+        die('Server not found');
+    }
+
+    $unit = 0;
+
 } else {
-    $stmt = $pdo->prepare('SELECT * FROM hosting_plans WHERE id = :id LIMIT 1');
-    $stmt->execute([':id' => $itemId]);
+
+    $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE id=:id LIMIT 1");
+    $stmt->execute([':id'=>$itemId]);
     $plan = $stmt->fetch();
-    if (!$plan) die('Plan not found');
-    $unit = (float)($plan['price_monthly'] ?? 0.00);
-    $currency = $plan['currency'] ?? 'INR';
+
+    if (!$plan) {
+        die('Plan not found');
+    }
+
+    $unit = (float)$plan['price_monthly'];
+    $currency = $plan['currency'] ?: 'INR';
+}
+
+/* Manual Price Override */
+
+if ($manualAmount !== '' && is_numeric($manualAmount)) {
+    $unit = (float)$manualAmount;
 }
 
 // Correct calculations accounting for quantity and billing months

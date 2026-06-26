@@ -19,20 +19,22 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $name         = trim($_POST['name']);
-    $email        = trim($_POST['email']);
-    $company_name = trim($_POST['company_name']);
-    $address      = trim($_POST['address']);
-    $city         = trim($_POST['city']);
-    $state        = trim($_POST['state']);
-    $pin_code     = trim($_POST['pin_code']);
-    $gst_number   = trim($_POST['gst_number']);
+    $name         = trim($_POST['name'] ?? '');
+    $email        = trim($_POST['email'] ?? '');
+    $phone        = trim($_POST['phone'] ?? ''); // Added phone variable
+    $company_name = trim($_POST['company_name'] ?? '');
+    $address      = trim($_POST['address'] ?? '');
+    $city         = trim($_POST['city'] ?? '');
+    $state        = trim($_POST['state'] ?? '');
+    $pin_code     = trim($_POST['pin_code'] ?? '');
+    $gst_number   = trim($_POST['gst_number'] ?? '');
 
     $sql = "
         UPDATE login
         SET
             name = :name,
             email = :email,
+            phone = :phone, 
             company_name = :company_name,
             address = :address,
             city = :city,
@@ -44,16 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->prepare($sql);
 
+    // Added :phone to the execution array
     $stmt->execute([
-        ':name' => $name,
-        ':email' => $email,
+        ':name'         => $name,
+        ':email'        => $email,
+        ':phone'        => $phone, 
         ':company_name' => $company_name,
-        ':address' => $address,
-        ':city' => $city,
-        ':state' => $state,
-        ':pin_code' => $pin_code,
-        ':gst_number' => $gst_number,
-        ':id' => $id
+        ':address'      => $address,
+        ':city'         => $city,
+        ':state'        => $state,
+        ':pin_code'     => $pin_code,
+        ':gst_number'   => $gst_number,
+        ':id'           => $id
     ]);
 
     header("Location: users.php?updated=1");
@@ -79,7 +83,7 @@ include '_header.php';
                     <input type="text"
                            name="name"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['name']); ?>">
+                           value="<?php echo htmlspecialchars($user['name'] ?? ''); ?>">
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -87,7 +91,15 @@ include '_header.php';
                     <input type="email"
                            name="email"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['email']); ?>">
+                           value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Phone</label>
+                    <input type="text"
+                           name="phone"
+                           class="form-control"
+                           value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -95,7 +107,7 @@ include '_header.php';
                     <input type="text"
                            name="company_name"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['company_name']); ?>">
+                           value="<?php echo htmlspecialchars($user['company_name'] ?? ''); ?>">
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -103,14 +115,14 @@ include '_header.php';
                     <input type="text"
                            name="gst_number"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['gst_number']); ?>">
+                           value="<?php echo htmlspecialchars($user['gst_number'] ?? ''); ?>">
                 </div>
 
                 <div class="col-12 mb-3">
                     <label>Address</label>
                     <textarea name="address"
                               class="form-control"
-                              rows="3"><?php echo htmlspecialchars($user['address']); ?></textarea>
+                              rows="3"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
                 </div>
 
                 <div class="col-md-4 mb-3">
@@ -118,7 +130,7 @@ include '_header.php';
                     <input type="text"
                            name="city"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['city']); ?>">
+                           value="<?php echo htmlspecialchars($user['city'] ?? ''); ?>">
                 </div>
 
                 <div class="col-md-4 mb-3">
@@ -126,7 +138,7 @@ include '_header.php';
                     <input type="text"
                            name="state"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['state']); ?>">
+                           value="<?php echo htmlspecialchars($user['state'] ?? ''); ?>">
                 </div>
 
                 <div class="col-md-4 mb-3">
@@ -134,7 +146,7 @@ include '_header.php';
                     <input type="text"
                            name="pin_code"
                            class="form-control"
-                           value="<?php echo htmlspecialchars($user['pin_code']); ?>">
+                           value="<?php echo htmlspecialchars($user['pin_code'] ?? ''); ?>">
                 </div>
 
             </div>

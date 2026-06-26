@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name         = trim($_POST['name'] ?? '');
     $username     = trim($_POST['username'] ?? '');
     $email        = trim($_POST['email'] ?? '');
+    $phone        = trim($_POST['phone'] ?? ''); // Added phone variable
     $password     = $_POST['password'] ?? '';
 
     $company_name = trim($_POST['company_name'] ?? '');
@@ -60,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SET
                     role_id = :role_id,
                     manager_id = :manager_id,
+                    phone = :phone, 
                     company_name = :company_name,
                     address = :address,
                     city = :city,
@@ -69,9 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE id = :id
             ");
 
+            // Added :phone to the execution array
             $stmt->execute([
                 ':role_id'      => $role_id,
                 ':manager_id'   => $manager_id ?: null,
+                ':phone'        => $phone, 
                 ':company_name' => $company_name,
                 ':address'      => $address,
                 ':city'         => $city,
@@ -143,6 +147,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input
                                     type="email"
                                     name="email"
+                                    class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    Phone
+                                </label>
+                                <input
+                                    type="text"
+                                    name="phone"
                                     class="form-control">
                             </div>
 
