@@ -44,12 +44,12 @@ $orders = $stmt->fetchAll();
             View Invoice
         </a>
 
-        <!-- <?php if ($role === 'admin'): ?>
+        <?php if ($role === 'admin'): ?>
             <a class="btn btn-sm btn-warning"
                href="edit_invoice.php?invoice_id=<?php echo $o['invoice_id']; ?>">
                 Edit Invoice
             </a>
-        <?php endif; ?> -->
+        <?php endif; ?>
 
         <!-- <br>
         <small class="text-muted">
