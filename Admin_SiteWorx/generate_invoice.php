@@ -282,7 +282,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
             ?>
               <tr>
     <td>
-        <div class="sw-item-name"><?php echo htmlspecialchars($itemName); ?></div>
+        <div class="sw-item-name"><?php echo htmlspecialchars($itemName); ?>
+     
+      </div>
         <div class="sw-item-cat">
             Category: <?php echo htmlspecialchars($itemCategory); ?>
         </div>
@@ -292,6 +294,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
                 Host: <?php echo htmlspecialchars($meta['hostname']); ?>
             </div>
         <?php endif; ?>
+         <?php if(!empty($meta['domain'])): ?>
+<div class="mt-2"> <b>Domain </b><?php echo $meta['domain']; ?></div>
+<?php endif; ?>
     </td>
 
     <td class="tc"><?php echo $period; ?> Month(s)</td>
@@ -337,7 +342,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
         Notes
     </h5>
 
-    <p class="mb-1 small">
+    <p class="mb-1 small pe-2">
         Thank you for your business. We appreciate your trust and look forward to serving you again.
     </p>
 
@@ -348,25 +353,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
     <div class="space-y-1">
         <div class="flex fs-6">
             <span class="w-28 ">Bank Name</span>
-            <span class="mx-3 fs-6"> : </span>
+            <span class="mx-3 fs-6 small"> :</span>
             <span class="small">HDFC Bank</span>
         </div>
 
         <div class="flex fs-6">
             <span class="w-28 fs-6">Payee Name</span>
-            <span class="mx-2">:</span>
-            <span class="small">Site Worx Infotech</span>
+            <span class="mx-2 small">:</span>
+            <span class="small mx-2">Site Worx Infotech</span>
         </div>
 
         <div class="flex fs-6">
             <span class="w-28 fs-6">Account No.</span>
-            <span class="mx-2"> :</span>
-            <span class="small">50200057304581</span>
+            <span class="mx-2 small"> :</span>
+            <span class="small mx-2">50200057304581</span>
         </div>
 
         <div class="flex fs-6">
             <span class="w-28 ">IFSC Code</span>
-            <span class="mx-4">:</span>
+            <span class="mx-4 small">:</span>
             <span class="small">HDFC0003922</span>
         </div>
     </div>
@@ -429,7 +434,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_GET['send'])) {
         <ol style="margin-top:8px;padding-left:18px;">
             <li>If applicable, deduct <strong>2% TDS</strong> only.</li>
 
-            <li>Any upgradations by Microsoft during the tenure will be applicable to the end client.</li>
+            <li>Any upgradations by Microsoft and Google during the tenure will be applicable to the end client.</li>
 
             <li><strong>SUBJECT TO JAIPUR JURISDICTION.</strong></li>
         </ol>

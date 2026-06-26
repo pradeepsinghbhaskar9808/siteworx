@@ -41,6 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Invoice Date</label>
+                        <input
+                            type="date"
+                            name="invoice_date"
+                            value="<?php echo date('Y-m-d'); ?>"
+                            class="form-control">
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label">Plan / Service</label>
                         <select name="item_id" class="form-select" required>
@@ -71,15 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         <input type="number" min="1" name="quantity" value="1" class="form-control" required>
                     </div>
                     <div class="col-md-2">
-    <label class="form-label">Manual Amount</label>
-    <input type="number"
-           name="manual_amount"
-           class="form-control"
-           step="0.01"
-           min="0"
-           placeholder="Auto">
-    <small class="text-muted">Leave blank to use default price.</small>
-</div>
+                        <label class="form-label">Manual Amount</label>
+                        <input type="number"
+                               name="manual_amount"
+                               class="form-control"
+                               step="0.01"
+                               min="0"
+                               placeholder="Auto">
+                        <small class="text-muted">Leave blank to use default price.</small>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Domain Details</label>
+                        <textarea id="domain_editor" name="domain" class="form-control" rows="5"></textarea>
+                    </div>
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary">Assign Service</button>
@@ -87,146 +99,212 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             </form>
         </div>
     </div>
+    
     <?php include '_footer.php'; ?>
     <?php
     exit;
 }
 
+// ===============================
 // POST Processing
-$user_id  = (int)($_POST['user_id'] ?? 0);
-$item     = (string)($_POST['item_id'] ?? '');
-$months   = max(1, (int)($_POST['period_months'] ?? 1));
-$quantity = max(1, (int)($_POST['quantity'] ?? 1));
+// ===============================
+
+$user_id      = (int)($_POST['user_id'] ?? 0);
+$item         = trim($_POST['item_id'] ?? '');
+$months       = max(1, (int)($_POST['period_months'] ?? 1));
+$quantity     = max(1, (int)($_POST['quantity'] ?? 1));
 $manualAmount = trim($_POST['manual_amount'] ?? '');
+$invoiceDate  = !empty($_POST['invoice_date']) ? $_POST['invoice_date'] : date('Y-m-d');
+$domain       = trim($_POST['domain'] ?? '');
 
 if (!$user_id || !$item || !sw_can_manage_user($pdo, $user_id)) {
-    die('Missing params or unauthorized access');
+    die('Missing parameters or unauthorized access.');
 }
 
 $type = 'plan';
 $itemId = 0;
+
 if (strpos($item, ':') !== false) {
-    [$type, $rawId] = explode(':', $item, 2);
+    list($type, $rawId) = explode(':', $item, 2);
     $itemId = (int)$rawId;
 } else {
     $itemId = (int)$item;
 }
 
-$plan = $service = $server = null;
+$plan = null;
+$service = null;
+$server = null;
 $currency = 'INR';
 
-if ($type === 'service') {
+switch ($type) {
+    case 'service':
+        $stmt = $pdo->prepare("SELECT * FROM service_catalog WHERE id=:id LIMIT 1");
+        $stmt->execute([':id'=>$itemId]);
+        $service = $stmt->fetch();
 
-    $stmt = $pdo->prepare("SELECT * FROM service_catalog WHERE id=:id LIMIT 1");
-    $stmt->execute([':id'=>$itemId]);
-    $service = $stmt->fetch();
+        if(!$service){
+            die("Service not found");
+        }
+        $unit = (float)$service['price'];
+        break;
 
-    if (!$service) {
-        die('Service not found');
-    }
+    case 'server':
+        $stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:id LIMIT 1");
+        $stmt->execute([':id'=>$itemId]);
+        $server = $stmt->fetch();
 
-    $unit = (float)$service['price'];
+        if(!$server){
+            die("Server not found");
+        }
+        $unit = 0;
+        break;
 
-} elseif ($type === 'server') {
+    default:
+        $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE id=:id LIMIT 1");
+        $stmt->execute([':id'=>$itemId]);
+        $plan = $stmt->fetch();
 
-    $stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:id LIMIT 1");
-    $stmt->execute([':id'=>$itemId]);
-    $server = $stmt->fetch();
-
-    if (!$server) {
-        die('Server not found');
-    }
-
-    $unit = 0;
-
-} else {
-
-    $stmt = $pdo->prepare("SELECT * FROM hosting_plans WHERE id=:id LIMIT 1");
-    $stmt->execute([':id'=>$itemId]);
-    $plan = $stmt->fetch();
-
-    if (!$plan) {
-        die('Plan not found');
-    }
-
-    $unit = (float)$plan['price_monthly'];
-    $currency = $plan['currency'] ?: 'INR';
+        if(!$plan){
+            die("Hosting Plan not found");
+        }
+        $unit = (float)$plan['price_monthly'];
+        $currency = $plan['currency'] ?: 'INR';
+        break;
 }
 
-/* Manual Price Override */
-
-if ($manualAmount !== '' && is_numeric($manualAmount)) {
+if($manualAmount !== '' && is_numeric($manualAmount)){
     $unit = (float)$manualAmount;
 }
 
-// Correct calculations accounting for quantity and billing months
-$total = $unit * $months * $quantity;
+$total = $unit * $quantity * $months;
+
+// Calculate expiration date safely in PHP to resolve the HY093 syntax error
+$expiresDate = date('Y-m-d', strtotime("+" . $months . " months", strtotime($invoiceDate)));
 
 try {
     $pdo->beginTransaction();
 
-    // 1. Create order
-    $stmt = $pdo->prepare('INSERT INTO orders (user_id, total_amount, currency, status, created_at) VALUES (:u, :total, :cur, :st, NOW())');
-    $stmt->execute([':u' => $user_id, ':total' => $total, ':cur' => $currency, ':st' => 'completed']);
+    // =============================
+    // ORDER
+    // =============================
+    $stmt = $pdo->prepare("
+        INSERT INTO orders (user_id, total_amount, currency, status, created_at)
+        VALUES (:u, :total, :currency, 'completed', :created)
+    ");
+    $stmt->execute([
+        ':u'        => $user_id,
+        ':total'    => $total,
+        ':currency' => $currency,
+        ':created'  => $invoiceDate
+    ]);
     $order_id = $pdo->lastInsertId();
 
-    // 2. Create order item
-    $meta = $server ? json_encode(['server_id' => $server['id'], 'hostname' => $server['hostname']]) : null;
-    $stmt = $pdo->prepare('INSERT INTO order_items (order_id, plan_id, service_id, quantity, unit_price, period_months, meta) VALUES (:o, :p, :s, :qty, :price, :pm, :meta)');
-    $stmt->execute([
-        ':o'     => $order_id,
-        ':p'     => $plan['id'] ?? null,
-        ':s'     => $service['id'] ?? null,
-        ':qty'   => $quantity,
-        ':price' => $unit,
-        ':pm'    => $months,
-        ':meta'  => $meta
-    ]);
-    $item_id = $pdo->lastInsertId();
+    // =============================
+    // META
+    // =============================
+    $meta = [];
+    if($server){
+        $meta['server_id'] = $server['id'];
+        $meta['hostname'] = $server['hostname'];
+    }
+    $meta['domain'] = $domain;
+    $metaJson = json_encode($meta);
 
-    // 3. Create subscription
-    $stmt = $pdo->prepare('INSERT INTO subscriptions (user_id, plan_id, service_id, server_id, order_item_id, started_at, expires_at, status) VALUES (:u, :p, :s, :srv, :oi, NOW(), DATE_ADD(NOW(), INTERVAL :months MONTH), :st)');
+    // =============================
+    // ORDER ITEM
+    // =============================
+    $stmt = $pdo->prepare("
+        INSERT INTO order_items (order_id, plan_id, service_id, quantity, unit_price, period_months, meta)
+        VALUES (:o, :p, :s, :q, :price, :period, :meta)
+    ");
     $stmt->execute([
-        ':u'      => $user_id,
+        ':o'      => $order_id,
         ':p'      => $plan['id'] ?? null,
         ':s'      => $service['id'] ?? null,
-        ':srv'    => $server['id'] ?? null,
-        ':oi'     => $item_id,
-        ':months' => $months,
-        ':st'     => 'active'
+        ':q'      => $quantity,
+        ':price'  => $unit,
+        ':period' => $months,
+        ':meta'   => $metaJson
+    ]);
+    $orderItemId = $pdo->lastInsertId();
+
+    // =============================
+    // SUBSCRIPTION
+    // =============================
+    $stmt = $pdo->prepare("
+        INSERT INTO subscriptions (user_id, plan_id, service_id, server_id, order_item_id, started_at, expires_at, status)
+        VALUES (:u, :p, :s, :srv, :oi, :start, :expires, 'active')
+    ");
+    $stmt->execute([
+        ':u'       => $user_id,
+        ':p'       => $plan['id'] ?? null,
+        ':s'       => $service['id'] ?? null,
+        ':srv'     => $server['id'] ?? null,
+        ':oi'      => $orderItemId,
+        ':start'   => $invoiceDate,
+        ':expires' => $expiresDate // Clean parameters passed straight through PHP
     ]);
 
-    // 4. Create invoice
-    $stmt = $pdo->prepare('INSERT INTO invoices (order_id, amount, status, issued_at) VALUES (:o, :amt, :st, NOW())');
-    $stmt->execute([':o' => $order_id, ':amt' => $total, ':st' => 'unpaid']);
+    // =============================
+    // INVOICE
+    // =============================
+    $stmt = $pdo->prepare("
+        INSERT INTO invoices (order_id, amount, status, issued_at, invoice_date)
+        VALUES (:o, :amount, 'unpaid', :issued, :invoiceDate)
+    ");
+    $stmt->execute([
+        ':o'           => $order_id,
+        ':amount'      => $total,
+        ':issued'      => $invoiceDate,
+        ':invoiceDate' => $invoiceDate
+    ]);
     $invoice_id = $pdo->lastInsertId();
 
+    // =============================
+    // AUDIT LOG
+    // =============================
+    $audit = [
+        'invoice_id' => $invoice_id,
+        'user_id'    => $user_id,
+        'amount'     => $total,
+        'qty'        => $quantity,
+        'months'     => $months,
+        'domain'     => $domain
+    ];
+    $stmt = $pdo->prepare("
+        INSERT INTO audit_logs (operation, user_id, data)
+        VALUES ('Invoice Created', :uid, :data)
+    ");
+    $stmt->execute([
+        ':uid'  => current_user($pdo)['id'],
+        ':data' => json_encode($audit)
+    ]);
+
     $pdo->commit();
-} catch (Exception $e) {
+
+} catch(Exception $e) {
     $pdo->rollBack();
-    die('Error assigning service: ' . $e->getMessage());
+    die($e->getMessage());
 }
 
-// Send invoice email
-$u = $pdo->prepare('SELECT email, name FROM login WHERE id = :id LIMIT 1');
-$u->execute([':id' => $user_id]);
-$user = $u->fetch();
+// =============================
+// SEND EMAIL
+// =============================
+$userStmt = $pdo->prepare("SELECT email, name FROM login WHERE id=:id LIMIT 1");
+$userStmt->execute([':id' => $user_id]);
+$user = $userStmt->fetch();
 
-if ($user && !empty($user['email'])) {
-    $subject    = 'Your SiteWorx invoice #' . $invoice_id;
-    $link       = (isset($_SERVER['HTTP_HOST']) ? 'https://' . $_SERVER['HTTP_HOST'] : '') . dirname($_SERVER['REQUEST_URI']) . '/generate_invoice?invoice_id=' . $invoice_id;
+if($user && !empty($user['email'])) {
+    $subject = "Invoice #" . $invoice_id;
+    $link = "https://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . "/generate_invoice?invoice_id=" . $invoice_id;
+    $amountText = $currency . " " . number_format($total, 2);
     $clientName = $user['name'] ?: $user['email'];
-    $amountText = $currency . ' ' . number_format($total, 2);
-    
+
     $html = sw_invoice_email_html($clientName, $invoice_id, $amountText, 'unpaid', $link);
-    $text = "Hello {$clientName},\n\n"
-        . "An invoice has been generated for your service.\n"
-        . "Amount Due: {$amountText}\n"
-        . "View Invoice: {$link}\n\n"
-        . "Thank you,\nSiteWorx";
-        
+    $text = "Hello {$clientName}\n\nInvoice Generated\n\nAmount : {$amountText}\n\nView Invoice\n\n{$link}\n\nThanks";
+
     sw_mail_send($user['email'], $clientName, $subject, $html, $text);
 }
 
-header('Location: generate_invoice?invoice_id=' . $invoice_id);
+header("Location: generate_invoice?invoice_id=" . $invoice_id);
 exit;

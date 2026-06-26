@@ -253,3 +253,10 @@ ADD gst_rate DECIMAL(5,2) DEFAULT 18.00;
 
 
 ALTER TABLE login ADD COLUMN phone VARCHAR(100) NULL AFTER email;
+
+
+--26-06
+ALTER TABLE invoices
+ADD COLUMN invoice_date DATE NULL AFTER invoice_no;
+ALTER TABLE invoices
+ADD COLUMN transaction_id VARCHAR(150) NULL AFTER invoice_no;
