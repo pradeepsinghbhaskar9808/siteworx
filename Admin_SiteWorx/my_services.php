@@ -51,7 +51,7 @@ $invoices = $inv->fetchAll();
     <div class="card mb-4">
       <div class="card-header"><strong>Recent Invoices</strong></div>
       <div class="list-group list-group-flush">
-        <?php foreach($invoices as $i): ?><a class="list-group-item list-group-item-action d-flex justify-content-between" href="generate_invoice.php?invoice_id=<?php echo $i['id']; ?>"><span>#<?php echo $i['id']; ?> <?php echo htmlspecialchars($i['status']); ?></span><strong><?php echo number_format($i['amount'], 2); ?></strong></a><?php endforeach; ?>
+        <?php foreach($invoices as $i): ?><a class="list-group-item list-group-item-action d-flex justify-content-between" href="generate_invoice?invoice_id=<?php echo $i['id']; ?>"><span>#<?php echo $i['id']; ?> <?php echo htmlspecialchars($i['status']); ?></span><strong><?php echo number_format($i['amount'], 2); ?></strong></a><?php endforeach; ?>
         <?php if (!$invoices): ?><div class="list-group-item text-muted">No invoices yet.</div><?php endif; ?>
       </div>
     </div>

@@ -36,7 +36,7 @@ $orders = $stmt->fetchAll();
       <td><?php echo htmlspecialchars($o['currency']); ?> <?php echo number_format($o['total_amount'],2); ?></td>
       <td><?php echo htmlspecialchars($o['status']); ?></td>
       <td><?php echo htmlspecialchars($o['created_at']); ?></td>
-      <td><?php if ($o['invoice_id']): ?><a href="generate_invoice.php?invoice_id=<?php echo $o['invoice_id']; ?>">#<?php echo $o['invoice_id']; ?> <?php echo htmlspecialchars($o['invoice_status']); ?></a><?php endif; ?></td>
+      <td><?php if ($o['invoice_id']): ?><a href="generate_invoice?invoice_id=<?php echo $o['invoice_id']; ?>">#<?php echo $o['invoice_id']; ?> <?php echo htmlspecialchars($o['invoice_status']); ?></a><?php endif; ?></td>
       <td>
         <?php if (in_array($role, ['admin','manager'], true)): ?>
           <form method="post" class="d-flex gap-2">

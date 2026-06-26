@@ -156,7 +156,7 @@ try {
 <div class="modal fade" id="assignModal" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="assign_service.php">
+			<form method="post" action="assign_service">
 			<div class="modal-header"><h5 class="modal-title">Assign Service to <span id="modal-username"></span></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
 			<div class="modal-body">
 				<input type="hidden" name="user_id" id="modal-userid">
@@ -176,6 +176,10 @@ try {
 					</label>
 				</div>
 				<div class="mb-2"><label>Period (months)<br><input name="period_months" value="1" class="form-control"></label></div>
+			<div class="col-md-2">
+    <label class="form-label">Quantity</label>
+    <input type="number" min="1" name="quantity" value="1" class="form-control" required>
+</div>
 			</div>
 			<div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button><button class="btn btn-primary">Assign</button></div>
 			</form>

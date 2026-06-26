@@ -44,13 +44,22 @@ $users = $stmt->fetchAll();
           <td><select name="role_id" class="form-select form-select-sm"><?php foreach($roles as $r): ?><option value="<?php echo $r['id']; ?>" <?php echo (int)$u['role_id']===(int)$r['id']?'selected':''; ?>><?php echo htmlspecialchars($r['name']); ?></option><?php endforeach; ?></select></td>
           <td><select name="manager_id" class="form-select form-select-sm"><option value="">None</option><?php foreach($managers as $m): ?><option value="<?php echo $m['id']; ?>" <?php echo (int)$u['manager_id']===(int)$m['id']?'selected':''; ?>><?php echo htmlspecialchars($m['name'] ?: $m['username']); ?></option><?php endforeach; ?></select></td>
           <td><select name="status" class="form-select form-select-sm"><?php foreach(['active','suspended','deleted'] as $s): ?><option <?php echo $u['status']===$s?'selected':''; ?>><?php echo $s; ?></option><?php endforeach; ?></select></td>
-          <td><button class="btn btn-sm btn-primary">Save</button></td>
+          <td>
+           <a href="edit_user.php?id=<?php echo $u['id']; ?>"
+       class="btn btn-sm btn-warning">
+       Edit  </a>
+          <button class="btn btn-sm btn-primary">Save</button></td>
         </form>
       <?php else: ?>
         <td><?php echo htmlspecialchars($u['role_name']); ?></td>
         <td><?php echo htmlspecialchars($u['manager_name'] ?: $u['manager_username']); ?></td>
         <td><?php echo htmlspecialchars($u['status']); ?></td>
-        <td></td>
+        <td>
+    <a href="edit_user.php?id=<?php echo $u['id']; ?>"
+       class="btn btn-sm btn-warning">
+       Edit
+    </a>
+</td>
       <?php endif; ?>
     </tr>
   <?php endforeach; ?>
